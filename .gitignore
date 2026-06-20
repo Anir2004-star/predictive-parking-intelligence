@@ -1,0 +1,22 @@
+node_modules/
+dist/
+build/
+.env
+__pycache__/
+*.pyc
+venv/
+env/
+
+# Large Datasets
+dataset/
+*.csv
+*.zip
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# ML artifacts
+catboost_info/
+*.model
+*.pkl

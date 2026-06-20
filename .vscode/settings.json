@@ -1,0 +1,6 @@
+{
+    "python.defaultInterpreterPath": "C:\\Users\\ACER\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "python.analysis.extraPaths": [],
+    "jupyter.kernels.filter": [],
+    "python.linting.enabled": true
+}

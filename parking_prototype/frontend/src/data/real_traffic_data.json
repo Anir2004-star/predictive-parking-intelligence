@@ -1,0 +1,191 @@
+{
+    "BTP082 - KR Market Junction": {
+        "demand": 0.002,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "BTP080 - NR Road, SP Road Junction": {
+        "demand": 0.0042,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "BTP020 - Hosahalli Metro Station": {
+        "demand": 0.0172,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "BTP027 - Modi Bridge Junction": {
+        "demand": 0.1618,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "BTP001 - 10th Cross, Dr. Rajkumar Road": {
+        "demand": 0.0204,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "BTP043 - Upparpet Junction": {
+        "demand": 0.0436,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "BTP044 - Sagar Theatre Junction": {
+        "demand": 0.1854,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "BTP045 - Danvanthri Road Junction": {
+        "demand": 0.352,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "BTP057 - Anand Rao Junction": {
+        "demand": 0.021,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "BTP040 - Elite Junction": {
+        "demand": 0.088,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "BTP058 - Subbanna Junction": {
+        "demand": 0.001,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "BTP051 - Safina Plaza Junction": {
+        "demand": 0.0988,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "BTP042 - Minsk Square Junction (CTO)": {
+        "demand": 0.018,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "BTP211 - Central Street Junction": {
+        "demand": 0.0746,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "HAL Old Airport Street (tdr1xfk)": {
+        "demand": 0.3446,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "HAL Old Airport Street (tdr1xfm)": {
+        "demand": 0.3312,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "HAL Old Airport Street (tdr1xfs)": {
+        "demand": 0.5742,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "Mahadevapura Street (tdr1zmu)": {
+        "demand": 0.3064,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "HAL Old Airport Street (tdr3858)": {
+        "demand": 0.2742,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "Malleshwaram Street (tdr4hb9)": {
+        "demand": 0.301,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "Malleshwaram Street (tdr4hbc)": {
+        "demand": 0.2694,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "Hebbala Street (tdr4jt4)": {
+        "demand": 0.4174,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "Kodigehalli Street (tdr4me3)": {
+        "demand": 0.345,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "Kodigehalli Street (tdr4me9)": {
+        "demand": 0.4414,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "K.R. Pura Street (tdr4pbp)": {
+        "demand": 0.2738,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "Chikkajala Street (tdr5p8h)": {
+        "demand": 0.4298,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    },
+    "K.R. Pura Street (tdr6000)": {
+        "demand": 0.3606,
+        "RoadType": "Main Road",
+        "NumberofLanes": 2,
+        "Weather": "Clear",
+        "Temperature": 28.0
+    }
+}

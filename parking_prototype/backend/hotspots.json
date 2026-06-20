@@ -1,0 +1,494 @@
+{
+    "hotspots": [
+        {
+            "id": "HS_tdr1v21",
+            "locationName": "BTP082 - KR Market Junction",
+            "lat": 12.964393200759849,
+            "lng": 77.57659559141477,
+            "total_violations": 5220,
+            "impact_score": 2623,
+            "breakdown": {
+                "WRONG PARKING": 44,
+                "NO PARKING": 714
+            }
+        },
+        {
+            "id": "HS_tdr1v63",
+            "locationName": "BTP040 - Elite Junction",
+            "lat": 12.977173419614342,
+            "lng": 77.57650539412474,
+            "total_violations": 3319,
+            "impact_score": 1668,
+            "breakdown": {
+                "NO PARKING": 47,
+                "WRONG PARKING": 15
+            }
+        },
+        {
+            "id": "HS_tdr1y54",
+            "locationName": "BTP051 - Safina Plaza Junction",
+            "lat": 12.981127678077986,
+            "lng": 77.61035028246853,
+            "total_violations": 3257,
+            "impact_score": 1636,
+            "breakdown": {
+                "WRONG PARKING": 116,
+                "NO PARKING": 89
+            }
+        },
+        {
+            "id": "HS_tdr1u9f",
+            "locationName": "BTP020 - Hosahalli Metro Station",
+            "lat": 12.974321436434108,
+            "lng": 77.5450763727334,
+            "total_violations": 2967,
+            "impact_score": 1491,
+            "breakdown": {
+                "WRONG PARKING": 40,
+                "NO PARKING": 21
+            }
+        },
+        {
+            "id": "HS_tdr1xfs",
+            "locationName": "HAL Old Airport Street (tdr1xfs)",
+            "lat": 12.934027277425056,
+            "lng": 77.69075001430276,
+            "total_violations": 2871,
+            "impact_score": 1442,
+            "breakdown": {
+                "NO PARKING": 1119,
+                "WRONG PARKING": 563,
+                "PARKING IN A MAIN ROAD": 167
+            }
+        },
+        {
+            "id": "HS_tdr1y51",
+            "locationName": "BTP051 - Safina Plaza Junction",
+            "lat": 12.981115816021592,
+            "lng": 77.6097802202759,
+            "total_violations": 2787,
+            "impact_score": 1400,
+            "breakdown": {
+                "NO PARKING": 73,
+                "WRONG PARKING": 66
+            }
+        },
+        {
+            "id": "HS_tdr1v66",
+            "locationName": "BTP040 - Elite Junction",
+            "lat": 12.976799673900295,
+            "lng": 77.57766525630498,
+            "total_violations": 2728,
+            "impact_score": 1371,
+            "breakdown": {
+                "WRONG PARKING": 14,
+                "NO PARKING": 24
+            }
+        },
+        {
+            "id": "HS_tdr1y50",
+            "locationName": "BTP051 - Safina Plaza Junction",
+            "lat": 12.981313428533934,
+            "lng": 77.60809344131984,
+            "total_violations": 2667,
+            "impact_score": 1340,
+            "breakdown": {
+                "WRONG PARKING": 40,
+                "NO PARKING": 1098,
+                "PARKING IN A MAIN ROAD": 45
+            }
+        },
+        {
+            "id": "HS_tdr1vgt",
+            "locationName": "BTP211 - Central Street Junction",
+            "lat": 12.984030843653485,
+            "lng": 77.60357606022599,
+            "total_violations": 2655,
+            "impact_score": 1334,
+            "breakdown": {
+                "WRONG PARKING": 44,
+                "NO PARKING": 50
+            }
+        },
+        {
+            "id": "HS_tdr1v3e",
+            "locationName": "BTP044 - Sagar Theatre Junction",
+            "lat": 12.973038852475668,
+            "lng": 77.57909856534067,
+            "total_violations": 2363,
+            "impact_score": 1187,
+            "breakdown": {
+                "NO PARKING": 1442,
+                "WRONG PARKING": 21
+            }
+        },
+        {
+            "id": "HS_tdr4hb1",
+            "locationName": "BTP001 - 10th Cross, Dr. Rajkumar Road",
+            "lat": 13.008490809236235,
+            "lng": 77.55460116820603,
+            "total_violations": 2252,
+            "impact_score": 1131,
+            "breakdown": {
+                "WRONG PARKING": 5,
+                "NO PARKING": 5
+            }
+        },
+        {
+            "id": "HS_tdr4me9",
+            "locationName": "Kodigehalli Street (tdr4me9)",
+            "lat": 13.071287586268488,
+            "lng": 77.58798531657906,
+            "total_violations": 2207,
+            "impact_score": 1109,
+            "breakdown": {
+                "WRONG PARKING": 76,
+                "NO PARKING": 19
+            }
+        },
+        {
+            "id": "HS_tdr5p8h",
+            "locationName": "Chikkajala Street (tdr5p8h)",
+            "lat": 13.184190726151698,
+            "lng": 77.67969925644486,
+            "total_violations": 2149,
+            "impact_score": 1080,
+            "breakdown": {
+                "NO PARKING": 1341,
+                "PARKING IN A MAIN ROAD": 213,
+                "WRONG PARKING": 179
+            }
+        },
+        {
+            "id": "HS_tdr1v64",
+            "locationName": "BTP040 - Elite Junction",
+            "lat": 12.97598467463598,
+            "lng": 77.5777456401597,
+            "total_violations": 2129,
+            "impact_score": 1070,
+            "breakdown": {
+                "NO PARKING": 19,
+                "WRONG PARKING": 11
+            }
+        },
+        {
+            "id": "HS_tdr4jt4",
+            "locationName": "Hebbala Street (tdr4jt4)",
+            "lat": 13.035540503684922,
+            "lng": 77.5891065622137,
+            "total_violations": 2087,
+            "impact_score": 1048,
+            "breakdown": {
+                "NO PARKING": 120,
+                "WRONG PARKING": 22
+            }
+        },
+        {
+            "id": "HS_tdr1y56",
+            "locationName": "BTP051 - Safina Plaza Junction",
+            "lat": 12.982505082067307,
+            "lng": 77.61061782024038,
+            "total_violations": 2080,
+            "impact_score": 1045,
+            "breakdown": {
+                "NO PARKING": 936,
+                "WRONG PARKING": 54,
+                "PARKING IN A MAIN ROAD": 38
+            }
+        },
+        {
+            "id": "HS_tdr1vgr",
+            "locationName": "BTP051 - Safina Plaza Junction",
+            "lat": 12.982286046987953,
+            "lng": 77.60665863146988,
+            "total_violations": 2075,
+            "impact_score": 1042,
+            "breakdown": {
+                "WRONG PARKING": 102,
+                "NO PARKING": 481,
+                "PARKING IN A MAIN ROAD": 56
+            }
+        },
+        {
+            "id": "HS_tdr1v61",
+            "locationName": "BTP040 - Elite Junction",
+            "lat": 12.97557032389814,
+            "lng": 77.57633081165524,
+            "total_violations": 2042,
+            "impact_score": 1026,
+            "breakdown": {
+                "WRONG PARKING": 14,
+                "NO PARKING": 21
+            }
+        },
+        {
+            "id": "HS_tdr1v2n",
+            "locationName": "BTP080 - NR Road, SP Road Junction",
+            "lat": 12.964450404929577,
+            "lng": 77.58381942692309,
+            "total_violations": 1846,
+            "impact_score": 927,
+            "breakdown": {
+                "WRONG PARKING": 14,
+                "NO PARKING": 18
+            }
+        },
+        {
+            "id": "HS_tdr6000",
+            "locationName": "K.R. Pura Street (tdr6000)",
+            "lat": 13.008281354797562,
+            "lng": 77.69572158141987,
+            "total_violations": 1803,
+            "impact_score": 906,
+            "breakdown": {
+                "WRONG PARKING": 75,
+                "NO PARKING": 465,
+                "PARKING IN A MAIN ROAD": 447
+            }
+        },
+        {
+            "id": "HS_tdr1v68",
+            "locationName": "BTP045 - Danvanthri Road Junction",
+            "lat": 12.978177068693181,
+            "lng": 77.57531688011365,
+            "total_violations": 1760,
+            "impact_score": 884,
+            "breakdown": {
+                "WRONG PARKING": 27,
+                "NO PARKING": 607
+            }
+        },
+        {
+            "id": "HS_tdr1uwm",
+            "locationName": "BTP027 - Modi Bridge Junction",
+            "lat": 12.999218716892072,
+            "lng": 77.54911255413992,
+            "total_violations": 1726,
+            "impact_score": 867,
+            "breakdown": {
+                "WRONG PARKING": 10,
+                "NO PARKING": 9
+            }
+        },
+        {
+            "id": "HS_tdr4me3",
+            "locationName": "Kodigehalli Street (tdr4me3)",
+            "lat": 13.070488524753621,
+            "lng": 77.58763563988407,
+            "total_violations": 1725,
+            "impact_score": 866,
+            "breakdown": {
+                "WRONG PARKING": 38,
+                "NO PARKING": 437
+            }
+        },
+        {
+            "id": "HS_tdr1xfk",
+            "locationName": "HAL Old Airport Street (tdr1xfk)",
+            "lat": 12.933407375325032,
+            "lng": 77.6910242226129,
+            "total_violations": 1723,
+            "impact_score": 865,
+            "breakdown": {
+                "NO PARKING": 894,
+                "WRONG PARKING": 484,
+                "PARKING IN A MAIN ROAD": 44
+            }
+        },
+        {
+            "id": "HS_tdr1vg1",
+            "locationName": "BTP042 - Minsk Square Junction (CTO)",
+            "lat": 12.981160673396676,
+            "lng": 77.59848238598575,
+            "total_violations": 1684,
+            "impact_score": 846,
+            "breakdown": {
+                "WRONG PARKING": 28,
+                "NO PARKING": 641
+            }
+        },
+        {
+            "id": "HS_tdr1xfm",
+            "locationName": "HAL Old Airport Street (tdr1xfm)",
+            "lat": 12.933003961437725,
+            "lng": 77.69136408609626,
+            "total_violations": 1656,
+            "impact_score": 832,
+            "breakdown": {
+                "NO PARKING": 67,
+                "WRONG PARKING": 385,
+                "PARKING IN A MAIN ROAD": 65
+            }
+        },
+        {
+            "id": "HS_tdr1vfz",
+            "locationName": "BTP051 - Safina Plaza Junction",
+            "lat": 12.97967224361314,
+            "lng": 77.60711355091242,
+            "total_violations": 1644,
+            "impact_score": 826,
+            "breakdown": {
+                "NO PARKING": 17,
+                "WRONG PARKING": 16
+            }
+        },
+        {
+            "id": "HS_tdr1v62",
+            "locationName": "BTP040 - Elite Junction",
+            "lat": 12.977095930914633,
+            "lng": 77.57550601884147,
+            "total_violations": 1640,
+            "impact_score": 824,
+            "breakdown": {
+                "WRONG PARKING": 27,
+                "NO PARKING": 650
+            }
+        },
+        {
+            "id": "HS_tdr1v67",
+            "locationName": "BTP044 - Sagar Theatre Junction",
+            "lat": 12.976891777591758,
+            "lng": 77.57934360115905,
+            "total_violations": 1553,
+            "impact_score": 780,
+            "breakdown": {
+                "NO PARKING": 12,
+                "WRONG PARKING": 16
+            }
+        },
+        {
+            "id": "HS_tdr1v4x",
+            "locationName": "BTP057 - Anand Rao Junction",
+            "lat": 12.978211767827206,
+            "lng": 77.57373364422952,
+            "total_violations": 1551,
+            "impact_score": 779,
+            "breakdown": {
+                "WRONG PARKING": 25,
+                "NO PARKING": 245
+            }
+        },
+        {
+            "id": "HS_tdr1zmu",
+            "locationName": "Mahadevapura Street (tdr1zmu)",
+            "lat": 12.996194122057283,
+            "lng": 77.6684995297536,
+            "total_violations": 1532,
+            "impact_score": 769,
+            "breakdown": {
+                "PARKING IN A MAIN ROAD": 126,
+                "NO PARKING": 193,
+                "WRONG PARKING": 90
+            }
+        },
+        {
+            "id": "HS_tdr1v30",
+            "locationName": "BTP043 - Upparpet Junction",
+            "lat": 12.969858709325466,
+            "lng": 77.57563787597441,
+            "total_violations": 1515,
+            "impact_score": 761,
+            "breakdown": {
+                "WRONG PARKING": 14,
+                "NO PARKING": 7
+            }
+        },
+        {
+            "id": "HS_tdr4hb9",
+            "locationName": "Malleshwaram Street (tdr4hb9)",
+            "lat": 13.011330297076412,
+            "lng": 77.55453777023256,
+            "total_violations": 1505,
+            "impact_score": 756,
+            "breakdown": {
+                "WRONG PARKING": 10,
+                "NO PARKING": 555
+            }
+        },
+        {
+            "id": "HS_tdr1v60",
+            "locationName": "BTP045 - Danvanthri Road Junction",
+            "lat": 12.975516819264806,
+            "lng": 77.57516969911505,
+            "total_violations": 1469,
+            "impact_score": 738,
+            "breakdown": {
+                "WRONG PARKING": 23,
+                "NO PARKING": 411
+            }
+        },
+        {
+            "id": "HS_tdr1v24",
+            "locationName": "BTP082 - KR Market Junction",
+            "lat": 12.964421843226894,
+            "lng": 77.577852787289,
+            "total_violations": 1384,
+            "impact_score": 695,
+            "breakdown": {
+                "WRONG PARKING": 10,
+                "NO PARKING": 278
+            }
+        },
+        {
+            "id": "HS_tdr3858",
+            "locationName": "HAL Old Airport Street (tdr3858)",
+            "lat": 12.939734036753316,
+            "lng": 77.69558131930661,
+            "total_violations": 1371,
+            "impact_score": 689,
+            "breakdown": {
+                "PARKING IN A MAIN ROAD": 34,
+                "NO PARKING": 29
+            }
+        },
+        {
+            "id": "HS_tdr4pbp",
+            "locationName": "K.R. Pura Street (tdr4pbp)",
+            "lat": 13.008237328097747,
+            "lng": 77.69471354955026,
+            "total_violations": 1369,
+            "impact_score": 688,
+            "breakdown": {
+                "WRONG PARKING": 59,
+                "NO PARKING": 333,
+                "PARKING IN A MAIN ROAD": 223
+            }
+        },
+        {
+            "id": "HS_tdr4hbc",
+            "locationName": "Malleshwaram Street (tdr4hbc)",
+            "lat": 13.012507319524872,
+            "lng": 77.5544247294729,
+            "total_violations": 1347,
+            "impact_score": 676,
+            "breakdown": {
+                "WRONG PARKING": 11,
+                "NO PARKING": 6
+            }
+        },
+        {
+            "id": "HS_tdr1v6e",
+            "locationName": "BTP058 - Subbanna Junction",
+            "lat": 12.97831513452856,
+            "lng": 77.57929260109101,
+            "total_violations": 1336,
+            "impact_score": 671,
+            "breakdown": {
+                "NO PARKING": 10,
+                "WRONG PARKING": 397
+            }
+        },
+        {
+            "id": "HS_tdr1v6b",
+            "locationName": "BTP057 - Anand Rao Junction",
+            "lat": 12.979743389816234,
+            "lng": 77.57493270382848,
+            "total_violations": 1306,
+            "impact_score": 656,
+            "breakdown": {
+                "WRONG PARKING": 35,
+                "NO PARKING": 346
+            }
+        }
+    ]
+}

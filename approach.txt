@@ -1,0 +1,89 @@
+================================================================
+GRIDLOCK HACKATHON 2.0 — TRAFFIC DEMAND PREDICTION (v5)
+Flipkart × HackerEarth
+================================================================
+
+APPROACH SUMMARY
+----------------
+Problem: Predict normalized traffic demand (0-1) for road segments
+at specific geohash locations and timestamps for Day 49.
+
+SCORE ACHIEVED: 91.54 (92.27% Accuracy)
+
+================================================================
+FEATURE ENGINEERING
+================================================================
+
+1. GEOSPATIAL FEATURES
+   - Decoded geohash to latitude and longitude using pygeohash
+   - Extracted geohash prefixes: gh3, gh4, gh5 (hierarchical location buckets)
+   - Frequency encoding: count of how many records each geohash appears
+
+2. TEMPORAL FEATURES
+   - Extracted hour and minute from timestamp
+   - Created 30-min and 15-min time bins
+   - Peak hour flags: morning peak (7-10am), evening peak (5-8pm), night (10pm-5am)
+   - Cyclical encoding: sin/cos of hour to capture periodicity
+
+3. TARGET ENCODING (NO DATA LEAK)
+   - Applied 10-Fold Out-Of-Fold (OOF) safe target encoding
+   - Encoded features: gh5, gh6, RoadType, time_bin_15m,
+     [gh5 x time_bin_30m], [gh4 x RoadType], [time_bin_30m x Weather]
+   - Smoothing alpha=10 to prevent high-cardinality overfitting
+
+4. LABEL ENCODING
+   - Encoded categorical: RoadType, LargeVehicles, Landmarks,
+     Weather, gh3, gh4, gh5, gh6
+
+================================================================
+MODELS USED
+================================================================
+
+Ensemble of 3 gradient boosting models trained with 10-Fold CV:
+
+1. LightGBM
+   - num_leaves=255, learning_rate=0.02
+   - num_boost_round=4000, early stopping=150
+   - OOF RMSE: 0.03005
+
+2. XGBoost
+   - max_depth=8, learning_rate=0.02
+   - num_boost_round=4000, early stopping=150
+   - OOF RMSE: 0.03032
+
+3. CatBoost
+   - depth=8, learning_rate=0.02
+   - iterations=4000, early stopping=150
+   - OOF RMSE: 0.03014
+
+ENSEMBLE METHOD:
+   - Used scipy.optimize.minimize to find mathematically optimal weights
+   - Optimal weights: LGB=0.39, XGB=0.26, CAT=0.35
+   - Final Ensemble OOF RMSE: 0.02943
+
+PSEUDO-LABEL BLENDING:
+   - Blended 70% V5 predictions + 30% V4 predictions for stability
+
+================================================================
+TOOLS & LIBRARIES
+================================================================
+
+- Python 3.11
+- pandas, numpy (data manipulation)
+- scikit-learn (KFold CV, LabelEncoder, metrics)
+- lightgbm (LightGBM gradient boosting)
+- xgboost (XGBoost gradient boosting)
+- catboost (CatBoost gradient boosting)
+- pygeohash (geohash decoding)
+- scipy (ensemble weight optimization)
+
+================================================================
+VALIDATION STRATEGY
+================================================================
+
+- 10-Fold Cross Validation with shuffle (random_state=42)
+- OOF predictions used for safe target encoding (no data leakage)
+- OOF predictions used for ensemble weight optimization
+
+
+   
