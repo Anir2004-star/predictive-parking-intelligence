@@ -39,10 +39,7 @@ print("=" * 60)
 train = pd.read_csv('dataset/dataset/train.csv')
 test  = pd.read_csv('dataset/dataset/test.csv')
 
-# Load V4 predictions for Pseudo-Labeling
-sub_v4 = pd.read_csv('submission_v4.csv')
-test_pseudo = test.copy()
-test_pseudo['demand'] = sub_v4['demand']
+
 
 print(f"Train: {train.shape} | Test: {test.shape}")
 print("Applying Pseudo-Labeling from V4...")
@@ -230,9 +227,7 @@ print(f"🏆 FINAL ENSEMBLE OOF RMSE: {ens_rmse:.5f}")
 final_test_preds = opt_w[0]*test_lgb + opt_w[1]*test_xgb + opt_w[2]*test_cat + opt_w[3]*test_rf
 final_test_preds = np.clip(final_test_preds, 0.0, 1.0)
 
-# Pseudo-Label Blending (Blend our highly accurate V4 with V5)
-print("\nBlending with V4 Pseudo-Labels...")
-final_test_preds = (final_test_preds * 0.7) + (test_pseudo['demand'] * 0.3)
+
 
 submission = pd.DataFrame({'Index': test['Index'], 'demand': final_test_preds})
 submission.to_csv('submission_v5.csv', index=False)
