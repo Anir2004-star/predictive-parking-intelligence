@@ -84,11 +84,23 @@ const CommandCenter = () => {
         setTodayViolations(data.hotspots.reduce((sum, hs) => sum + hs.total_violations, 0));
         setActiveHotspotsCount(data.hotspots.length);
       } catch (err) {
-        const locations = Object.keys(realTrafficData);
-        let sorted = locations.slice(0, 40).map((loc, i) => {
-          const real = realTrafficData[loc] || { demand: 0.1, NumberofLanes: 2 };
+        const bengaluruLocations = [
+          { name: "Silk Board Junction", lat: 12.9177, lng: 77.6238 },
+          { name: "Marathahalli Bridge", lat: 12.9553, lng: 77.7011 },
+          { name: "Koramangala Sony", lat: 12.9372, lng: 77.6269 },
+          { name: "Indiranagar 100ft", lat: 12.9784, lng: 77.6408 },
+          { name: "MG Road Metro", lat: 12.9750, lng: 77.6062 },
+          { name: "Hebbal Flyover", lat: 13.0354, lng: 77.5971 },
+          { name: "Electronic City Ph1", lat: 12.8399, lng: 77.6770 },
+          { name: "Whitefield Tech Park", lat: 12.9800, lng: 77.7300 },
+          { name: "Tin Factory", lat: 12.9961, lng: 77.6653 },
+          { name: "Madiwala Checkpost", lat: 12.9231, lng: 77.6187 }
+        ];
+        const realDataValues = Object.values(realTrafficData);
+        let sorted = bengaluruLocations.map((loc, index) => {
+          const real = realDataValues[index % realDataValues.length] || { demand: 0.1, NumberofLanes: 2 };
           return {
-            id: i, locationName: loc, lat: 12.9716, lng: 77.5946,
+            id: index, locationName: loc.name, lat: loc.lat, lng: loc.lng,
             total_violations: Math.round((real.demand * 500)),
             impact_score: Math.min(99, Math.round(real.demand * 400 + 40)),
           }
