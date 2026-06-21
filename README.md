@@ -18,9 +18,9 @@ Unorganized parking is a leading cause of urban gridlock. This project attacks t
 
 - **AI Traffic Command Center**: A live city map highlighting traffic corridors (Green/Yellow/Red). Pulsing markers isolate bottlenecks specifically induced by parking violations.
 - **Hotspot Intelligence**: A ranked leaderboard of the top 40 critical congestion nodes. Includes an AI SHAP breakdown explaining the exact drivers of the congestion (e.g., Wrong Parking 42%, Metro Traffic 13%).
-- **Predictive Analytics**: A time-series forecasting tool visualizing volume peaks (+30m, +1h, +3h) to allow enforcement agencies to preemptively deploy units *before* gridlock occurs.
-- **Incident Response Engine**: An automated dispatcher that evaluates the severity of capacity loss, analyzes nearby response units, and generates a Recovery Forecast.
-- **Parking Intelligence Copilot**: A conversational NLP interface allowing operators to query traffic data in plain English (e.g., *"Show me the top 5 worst hotspots"*), dynamically rendering mini-maps in the chat.
+- **Predictive Analytics**: A vectorized time-series forecasting tool visualizing volume peaks (+30m, +1h, +3h) to allow enforcement agencies to preemptively deploy units. Includes a dynamic dataset router to drill down into 140+ individual police stations.
+- **Incident Response Engine**: An automated dispatcher that evaluates the severity of capacity loss, analyzes nearby response units, and generates a dynamic Recovery Forecast for any selected hotspot.
+- **Generative AI Copilot**: A true LLM conversational interface powered by the **Google Gemini API**. The Copilot ingests the live telemetry matrix of all 140+ stations simultaneously, allowing operators to ask complex analytical questions (e.g., *"What is the risk score for Adugodi and show in map?"*) with intelligent intent matching and persistent chat history.
 
 ---
 
@@ -45,7 +45,11 @@ The predictive engine utilizes state-of-the-art tree-based regressors (XGBoost /
  ┃ ┃ ┣ 📂 src/
  ┃ ┃ ┃ ┣ 📂 pages/              # (CommandCenter, HotspotIntelligence, Copilot...)
  ┃ ┃ ┃ ┗ 📜 index.css           # Custom UI design system
- ┃ ┣ 📂 backend/                # Node.js / Express API Server
+ ┃ ┣ 📂 backend/                # Python / Flask Machine Learning API Server
+ ┃ ┃ ┣ 📜 app.py                # Core API, Model Inferences, and Gemini LLM router
+ ┃ ┃ ┣ 📜 train_model.py        # Random Forest model training script
+ ┃ ┃ ┣ 📜 requirements.txt      # Python dependencies
+ ┃ ┃ ┗ 📜 .env                  # API Keys (Google Gemini)
  ┃ ┗ 📂 data_pipeline/          # Python scripts for data ingestion and processing
  ┣ 📜 v5_grandmaster.py         # Advanced ML Model Pipeline & Training script
  ┣ 📜 improved_solution.py      # Baseline XGBoost model
@@ -64,12 +68,19 @@ Ensure you have the required Python dependencies (`pandas`, `numpy`, `xgboost`, 
 python v5_grandmaster.py
 ```
 
-### 2. Start the Backend API
-Navigate to the backend directory and install dependencies.
+### 2. Start the Python Backend API & Generative AI
+Navigate to the backend directory, install the Python dependencies, configure your API keys, and run the Flask server.
 ```bash
 cd parking_prototype/backend
-npm install
-npm start
+pip install -r requirements.txt
+```
+**Important:** You must add your Google Gemini API Key to enable the Generative AI Copilot. Create a `.env` file in the `backend` folder:
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+Start the server:
+```bash
+python app.py
 ```
 
 ### 3. Start the Frontend Dashboard
