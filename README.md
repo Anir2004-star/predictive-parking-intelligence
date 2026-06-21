@@ -81,4 +81,4 @@ npm run dev
 ```
 
 ---
-*Built for the Flipkart Grid Hackathon by Anir2004-star.*
+*Built for the Flipkart Grid Hackathon by Anirban Choudhury.*
