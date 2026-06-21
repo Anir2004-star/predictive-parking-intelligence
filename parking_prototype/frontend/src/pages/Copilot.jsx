@@ -4,19 +4,24 @@ import gsap from 'gsap';
 import ReactMarkdown from 'react-markdown';
 
 const Copilot = () => {
-  const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Operations Copilot initialized. I have access to live traffic telemetry, predictive models, and deployment protocols. How can I assist you today?' }
-  ]);
+  // Load chat history from localStorage or default
+  const [messages, setMessages] = useState(() => {
+    const saved = localStorage.getItem('copilot_history');
+    if (saved) return JSON.parse(saved);
+    return [{ role: 'assistant', content: 'Operations Copilot initialized. I have access to live traffic telemetry, predictive models, and deployment protocols. How can I assist you today?' }];
+  });
+
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [allHotspots, setAllHotspots] = useState([]);
   const containerRef = useRef(null);
   const chatEndRef = useRef(null);
 
   const quickActions = [
     "Show top hotspots",
     "Recommend deployment",
-    "Predict tomorrow",
-    "Explain congestion"
+    "Status of MG Road",
+    "Clear History"
   ];
 
   const recentAlerts = [
@@ -24,6 +29,19 @@ const Copilot = () => {
     { time: '13:50', msg: 'Heavy Tow Unit #04 arrived at Marathahalli.', type: 'success' },
     { time: '13:22', msg: 'Capacity dropped by 31% at MG Road.', type: 'warning' }
   ];
+
+  // Fetch hotspots data once on mount
+  useEffect(() => {
+    fetch('http://localhost:5000/api/hotspots')
+      .then(r => r.json())
+      .then(d => { if(d.hotspots) setAllHotspots(d.hotspots); })
+      .catch(e => console.error(e));
+  }, []);
+
+  // Save history
+  useEffect(() => {
+    localStorage.setItem('copilot_history', JSON.stringify(messages));
+  }, [messages]);
 
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -39,34 +57,50 @@ const Copilot = () => {
     });
   }, { scope: containerRef });
 
-  const handleSend = async (text) => {
+  const handleSend = (text) => {
     if (!text.trim()) return;
+    
+    if (text === "Clear History") {
+      const defaultMsg = [{ role: 'assistant', content: 'History cleared. Operations Copilot re-initialized. How can I assist you?' }];
+      setMessages(defaultMsg);
+      localStorage.setItem('copilot_history', JSON.stringify(defaultMsg));
+      return;
+    }
     
     setMessages(prev => [...prev, { role: 'user', content: text }]);
     setInput('');
     setIsTyping(true);
 
-    let response = `**Command received: "${text}"**\n\nI am analyzing the request...`;
+    let response = "";
     const lowerText = text.toLowerCase();
+    
+    // Check if the query asks for a specific location
+    const matchedLocation = allHotspots.find(h => lowerText.includes(h.locationName.toLowerCase()));
 
-    try {
-        if (lowerText.includes('hotspot')) {
-            const res = await fetch('http://localhost:5000/api/hotspots');
-            const data = await res.json();
-            const top = data.hotspots.slice(0, 3).map(h => `- **${h.locationName}**: ${h.total_violations} violations predicted`).join('\n');
-            response = `**Command received: "${text}"**\n\nBased on the live Random Forest ML model, the top critical hotspots right now are:\n${top}\n\n_System Note: Monitoring active._`;
-        } else if (lowerText.includes('deploy') || lowerText.includes('recommend') || lowerText.includes('dispatch')) {
-            const res = await fetch('http://localhost:5000/api/hotspots');
-            const data = await res.json();
-            const top = data.hotspots[0];
-            response = `**Command received: "${text}"**\n\nBased on current telemetry, I recommend deploying a Heavy Tow Unit to **${top ? top.locationName : 'the primary hotspot'}**. The predictive model indicates a 98% confidence that immediate action will significantly reduce travel delay.\n\n_System Note: Manual approval required for resource dispatch._`;
-        } else if (lowerText.includes('predict') || lowerText.includes('tomorrow') || lowerText.includes('congestion')) {
-            response = `**Command received: "${text}"**\n\nThe AI forecasting model projects a peak congestion at 18:30 today with an expected 14,200 violations city-wide. Model R² Score is currently 0.98.`;
+    if (matchedLocation) {
+        if (lowerText.includes('map') || lowerText.includes('show in map')) {
+            response = `**Command received: "${text}"**\n\nThe coordinates for **${matchedLocation.locationName}** are \`[${matchedLocation.lat}, ${matchedLocation.lng}]\`.\n\nThe current violation risk score is **${matchedLocation.impact_score}/100** with an expected volume of **${matchedLocation.total_violations} violations**.\n\n_System Note: Please navigate to the Hotspot Intelligence tab to view this node plotted on the live geographic map._`;
         } else {
-            response = `**Command received: "${text}"**\n\nQuery processed. System remains stable and all nodes are active.`;
+            response = `**Command received: "${text}"**\n\nLive ML Telemetry for **${matchedLocation.locationName}**:\n- **Predicted Violations**: ${matchedLocation.total_violations}\n- **Risk Score**: ${matchedLocation.impact_score}/100\n\n_System Note: This node is currently being monitored by traffic cameras._`;
         }
-    } catch (e) {
-        response = `**Command received: "${text}"**\n\nError connecting to ML telemetry backend. Fallback systems engaged.`;
+    } 
+    else if (lowerText.includes('hotspot')) {
+        const top = allHotspots.slice(0, 3).map(h => `- **${h.locationName}**: ${h.total_violations} violations predicted`).join('\n');
+        response = `**Command received: "${text}"**\n\nBased on the live Random Forest ML model, the top critical hotspots right now are:\n${top}\n\n_System Note: Monitoring active._`;
+    } 
+    else if (lowerText.includes('deploy') || lowerText.includes('recommend') || lowerText.includes('dispatch')) {
+        const top = allHotspots[0];
+        response = `**Command received: "${text}"**\n\nBased on current telemetry, I recommend deploying a Heavy Tow Unit to **${top ? top.locationName : 'the primary hotspot'}**. The predictive model indicates a 98% confidence that immediate action will significantly reduce travel delay.\n\n_System Note: Manual approval required for resource dispatch._`;
+    } 
+    else if (lowerText.includes('predict') || lowerText.includes('tomorrow') || lowerText.includes('congestion')) {
+        response = `**Command received: "${text}"**\n\nThe AI forecasting model projects a peak congestion at 18:30 today with an expected 14,200 violations city-wide. Model R² Score is currently 0.98.`;
+    } 
+    // Out of bounds / Greeting detection
+    else if (lowerText.match(/hello|hi|how are you|who are you|what is your name|help/)) {
+        response = `**Command received: "${text}"**\n\nI am the AI Operations Copilot for the Bengaluru Traffic Command Center. I process telemetry, analyze hotspots, and recommend resource dispatch. Try asking me for "top hotspots" or "status of MG Road".`;
+    }
+    else {
+        response = `**Command received: "${text}"**\n\n_Error: Query out of operational bounds._\n\nI am restricted by protocol. I prefer not to answer questions outside of traffic operations, telemetry, or dispatch logistics. Please rephrase your query to fit command parameters.`;
     }
 
     setTimeout(() => {
@@ -122,7 +156,9 @@ const Copilot = () => {
                   key={action}
                   onClick={() => handleSend(action)}
                   style={{
-                    background: '#EFF6FF', color: 'var(--primary-blue)', border: '1px solid #BFDBFE',
+                    background: action === 'Clear History' ? '#FEF2F2' : '#EFF6FF', 
+                    color: action === 'Clear History' ? 'var(--danger)' : 'var(--primary-blue)', 
+                    border: action === 'Clear History' ? '1px solid #FCA5A5' : '1px solid #BFDBFE',
                     padding: '8px 16px', borderRadius: '4px', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
                     transition: 'background 0.2s'
                   }}
@@ -160,7 +196,7 @@ const Copilot = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
                  <span style={{ color: 'var(--text-secondary)' }}>Model Active</span>
-                 <span style={{ color: 'var(--success)', fontWeight: 600 }}>XGBoost V2.4</span>
+                 <span style={{ color: 'var(--success)', fontWeight: 600 }}>Random Forest V2.4</span>
                </div>
                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
                  <span style={{ color: 'var(--text-secondary)' }}>Telemetry Delay</span>
