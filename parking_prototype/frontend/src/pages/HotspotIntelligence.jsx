@@ -43,10 +43,9 @@ const HotspotIntelligence = () => {
         const data = await response.json();
         let rawHotspots = data.hotspots.sort((a,b) => b.impact_score - a.impact_score).slice(0, 10);
         
-        let sorted = rawHotspots.map((hs, i) => {
-           const loc = bengaluruLocations[i % bengaluruLocations.length];
+        let sorted = rawHotspots.map(hs => {
            return {
-             id: hs.id, locationName: loc.name, lat: loc.lat, lng: loc.lng,
+             id: hs.id, locationName: hs.locationName, lat: hs.lat, lng: hs.lng,
              total_violations: hs.total_violations,
              impact_score: Math.min(99, Math.round(hs.impact_score / 50)),
              realData: { demand: hs.total_violations / 500, NumberofLanes: 2 } 
