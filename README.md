@@ -76,6 +76,14 @@ The predictive engine utilizes state-of-the-art tree-based regressors (XGBoost /
 
 ---
 
+## 🛠️ Technology Stack
+
+*   **Backend & Machine Learning:** Python, Flask, Scikit-Learn (Random Forest Regressor), Pandas (Vectorized Inferences).
+*   **Frontend UI:** React.js, Vite, GSAP (Micro-animations), Recharts, Leaflet.js (Geospatial Mapping).
+*   **Generative AI:** Google Gemini SDK (`google-generativeai`).
+
+---
+
 ## 🚀 How to Run
 
 ### 1. Run the ML Training
