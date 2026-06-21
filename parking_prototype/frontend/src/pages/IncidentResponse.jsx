@@ -9,6 +9,7 @@ const IncidentResponse = () => {
   const [dispatchStatus, setDispatchStatus] = useState('pending'); // 'pending', 'authorized', 'manual_review', 'recovered'
   const [currentTime, setCurrentTime] = useState('');
   const [recoveryTime, setRecoveryTime] = useState('');
+  const [expectedRecoveryTime, setExpectedRecoveryTime] = useState('');
 
   const [pastTimes, setPastTimes] = useState({ t1: '...', t2: '...', t3: '...' });
 
@@ -55,10 +56,10 @@ const IncidentResponse = () => {
       status: dispatchStatus === 'recovered' ? 'past' : dispatchStatus === 'authorized' ? 'current' : dispatchStatus === 'manual_review' ? 'current' : 'future' 
     },
     { 
-      time: dispatchStatus === 'recovered' ? recoveryTime : 'Pending', 
+      time: dispatchStatus === 'recovered' ? recoveryTime : dispatchStatus === 'authorized' ? `Exp. ${expectedRecoveryTime}` : 'Pending', 
       title: 'Recovery Achieved', 
       desc: dispatchStatus === 'recovered' ? 'Restoration of normal traffic flow.' : 'Awaiting tow completion.', 
-      status: dispatchStatus === 'recovered' ? 'current' : 'future' 
+      status: dispatchStatus === 'recovered' ? 'past' : 'future' 
     }
   ];
 
@@ -76,13 +77,17 @@ const IncidentResponse = () => {
   const handleAuthorize = () => {
     setDispatchStatus('authorized');
     
-    // Simulate recovery progression for the demo
+    // Pre-calculate expected completion time based on AI delay forecast
+    const futureDate = new Date();
+    futureDate.setMinutes(futureDate.getMinutes() + delayWith);
+    const expectedStr = `${futureDate.getHours().toString().padStart(2, '0')}:${futureDate.getMinutes().toString().padStart(2, '0')}`;
+    setExpectedRecoveryTime(expectedStr);
+    
+    // Actually wait for that real time to pass (demo realism)
     setTimeout(() => {
-      const recoveryDate = new Date();
-      recoveryDate.setMinutes(recoveryDate.getMinutes() + delayWith);
-      setRecoveryTime(`${recoveryDate.getHours().toString().padStart(2, '0')}:${recoveryDate.getMinutes().toString().padStart(2, '0')}`);
+      setRecoveryTime(expectedStr);
       setDispatchStatus('recovered');
-    }, 4000);
+    }, delayWith * 60 * 1000); 
   };
 
   const handleManualReview = () => {
