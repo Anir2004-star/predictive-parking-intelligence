@@ -3,6 +3,11 @@ from flask_cors import CORS
 import joblib
 import pandas as pd
 import datetime
+import os
+from dotenv import load_dotenv
+from google import genai
+from google.genai import types
+from flask import request
 
 app = Flask(__name__)
 CORS(app)
@@ -15,6 +20,10 @@ try:
 except Exception as e:
     print(f"Error loading model: {e}")
     model = None
+
+load_dotenv()
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY and GEMINI_API_KEY != "YOUR_API_KEY_HERE" else None
 
 # Hardcode some dummy coordinates for the police stations to display on map
 STATION_COORDS = {
@@ -30,51 +39,30 @@ STATION_COORDS = {
     "Marathahalli": {"lat": 12.9553, "lng": 77.7011}
 }
 
-@app.route('/api/hotspots', methods=['GET'])
-def get_hotspots():
+def _get_predictions():
     if model is None:
-        return jsonify({"error": "Model not loaded"}), 500
+        return []
 
-    # Get current time for dynamic prediction
     now = datetime.datetime.now()
     current_hour = now.hour
     current_day = now.weekday()
-
-    # Get all stations known to the encoder
     stations = le.classes_
-    
-    # Predict for each station
     predictions = []
     
     for i, station in enumerate(stations):
-        # We only predict for stations we have rough coordinates for to make the map look nice,
-        # or we assign them a generic coordinate.
         coords = STATION_COORDS.get(station, {
             "lat": 12.9716 + (hash(station) % 100) * 0.0005, 
             "lng": 77.5946 + ((hash(station) // 100) % 100) * 0.0005
         })
-        
         station_encoded = le.transform([station])[0]
-        
-        # Prepare feature vector: [police_station_encoded, day_of_week, hour]
         features = pd.DataFrame([{
             'police_station_encoded': station_encoded,
             'day_of_week': current_day,
             'hour': current_hour
         }])
-        
-        # Predict violation count
         pred_count = model.predict(features)[0]
-        
-        # To make numbers look realistic for a daily dashboard
-        # Random Forest might output a small float if there are few rows. 
-        # We'll scale it slightly for visual impact if it's too low.
         pred_count = max(5, int(pred_count * 15))
-        
-        # Calculate an impact score 0-100
         impact_score = min(99, int((pred_count / 100) * 100))
-        
-        # The frontend scales impact_score by 50 in some places, so we supply a large raw score
         raw_impact_score = impact_score * 50
         
         predictions.append({
@@ -86,10 +74,14 @@ def get_hotspots():
             "impact_score": raw_impact_score
         })
         
-    # Sort by highest predicted violations
     predictions.sort(key=lambda x: x["total_violations"], reverse=True)
+    return predictions
 
-    return jsonify({"hotspots": predictions})
+@app.route('/api/hotspots', methods=['GET'])
+def get_hotspots():
+    if model is None:
+        return jsonify({"error": "Model not loaded"}), 500
+    return jsonify({"hotspots": _get_predictions()})
 
 @app.route('/api/predict_timeline', methods=['GET'])
 def get_predict_timeline():
@@ -119,6 +111,50 @@ def get_predict_timeline():
         })
 
     return jsonify({"timeline": timeline})
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    data = request.json
+    messages = data.get('messages', [])
+    
+    if not client:
+        return jsonify({"response": "Generative AI is currently disabled. Please add your Google Gemini API Key to the `backend/.env` file and restart the backend server."})
+
+    all_hotspots = _get_predictions()
+    hotspot_context = "\n".join([f"- {h['locationName']}: {h['total_violations']} expected violations, Risk Score: {h['impact_score']}/100" for h in all_hotspots])
+
+    system_prompt = f"""
+    You are the AI Operations Copilot for the Bengaluru Traffic Command Center.
+    You monitor traffic telemetry, analyze hotspots, and recommend resource dispatch (like Heavy Tow Units).
+    You are strictly an operations AI. If the user asks an out-of-bounds question (e.g., sports, cooking, coding help, general knowledge), politely decline and state your operational parameters.
+    If the user asks for the status of a location that is NOT in the telemetry data below, you must reply: "I do not have telemetry for [Location]. That location is not present in the current uploaded dataset."
+    
+    Current Live Traffic ML Telemetry data:
+    {hotspot_context}
+    
+    Keep responses concise, professional, and formatted in markdown. Use bullet points where appropriate.
+    """
+
+    contents = []
+    for msg in messages[:-1]:
+        role = 'model' if msg['role'] == 'assistant' else 'user'
+        if msg['content'].strip():
+            contents.append(types.Content(role=role, parts=[types.Part.from_text(text=msg['content'])]))
+
+    latest_message = messages[-1]['content'] if messages else ""
+
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=contents + [latest_message],
+            config=types.GenerateContentConfig(
+                system_instruction=system_prompt,
+            )
+        )
+        return jsonify({"response": response.text})
+    except Exception as e:
+        print(f"Gemini API Error: {e}")
+        return jsonify({"response": f"**System Error:** Connecting to Generative AI Backend failed: {e}"})
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

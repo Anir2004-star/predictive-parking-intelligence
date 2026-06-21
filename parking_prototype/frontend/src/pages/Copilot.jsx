@@ -20,7 +20,7 @@ const Copilot = () => {
   const quickActions = [
     "Show top hotspots",
     "Recommend deployment",
-    "Status of MG Road",
+    allHotspots.length > 0 ? `Status of ${allHotspots[0].locationName}` : "Status of Area",
     "Clear History"
   ];
 
@@ -57,7 +57,7 @@ const Copilot = () => {
     });
   }, { scope: containerRef });
 
-  const handleSend = (text) => {
+  const handleSend = async (text) => {
     if (!text.trim()) return;
     
     if (text === "Clear History") {
@@ -67,46 +67,26 @@ const Copilot = () => {
       return;
     }
     
-    setMessages(prev => [...prev, { role: 'user', content: text }]);
+    const newMessages = [...messages, { role: 'user', content: text }];
+    setMessages(newMessages);
     setInput('');
     setIsTyping(true);
 
-    let response = "";
-    const lowerText = text.toLowerCase();
-    
-    // Check if the query asks for a specific location
-    const matchedLocation = allHotspots.find(h => lowerText.includes(h.locationName.toLowerCase()));
-
-    if (matchedLocation) {
-        if (lowerText.includes('map') || lowerText.includes('show in map')) {
-            response = `**Command received: "${text}"**\n\nThe coordinates for **${matchedLocation.locationName}** are \`[${matchedLocation.lat}, ${matchedLocation.lng}]\`.\n\nThe current violation risk score is **${matchedLocation.impact_score}/100** with an expected volume of **${matchedLocation.total_violations} violations**.\n\n_System Note: Please navigate to the Hotspot Intelligence tab to view this node plotted on the live geographic map._`;
-        } else {
-            response = `**Command received: "${text}"**\n\nLive ML Telemetry for **${matchedLocation.locationName}**:\n- **Predicted Violations**: ${matchedLocation.total_violations}\n- **Risk Score**: ${matchedLocation.impact_score}/100\n\n_System Note: This node is currently being monitored by traffic cameras._`;
-        }
-    } 
-    else if (lowerText.includes('hotspot')) {
-        const top = allHotspots.slice(0, 3).map(h => `- **${h.locationName}**: ${h.total_violations} violations predicted`).join('\n');
-        response = `**Command received: "${text}"**\n\nBased on the live Random Forest ML model, the top critical hotspots right now are:\n${top}\n\n_System Note: Monitoring active._`;
-    } 
-    else if (lowerText.includes('deploy') || lowerText.includes('recommend') || lowerText.includes('dispatch')) {
-        const top = allHotspots[0];
-        response = `**Command received: "${text}"**\n\nBased on current telemetry, I recommend deploying a Heavy Tow Unit to **${top ? top.locationName : 'the primary hotspot'}**. The predictive model indicates a 98% confidence that immediate action will significantly reduce travel delay.\n\n_System Note: Manual approval required for resource dispatch._`;
-    } 
-    else if (lowerText.includes('predict') || lowerText.includes('tomorrow') || lowerText.includes('congestion')) {
-        response = `**Command received: "${text}"**\n\nThe AI forecasting model projects a peak congestion at 18:30 today with an expected 14,200 violations city-wide. Model R² Score is currently 0.98.`;
-    } 
-    // Out of bounds / Greeting detection
-    else if (lowerText.match(/hello|hi|how are you|who are you|what is your name|help/)) {
-        response = `**Command received: "${text}"**\n\nI am the AI Operations Copilot for the Bengaluru Traffic Command Center. I process telemetry, analyze hotspots, and recommend resource dispatch. Try asking me for "top hotspots" or "status of MG Road".`;
+    try {
+        const response = await fetch('http://localhost:5000/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: newMessages })
+        });
+        
+        const data = await response.json();
+        
+        setIsTyping(false);
+        setMessages(prev => [...prev, { role: 'assistant', content: data.response }]);
+    } catch (e) {
+        setIsTyping(false);
+        setMessages(prev => [...prev, { role: 'assistant', content: `**System Error:** Could not reach the AI backend. Please verify the Flask server is running.` }]);
     }
-    else {
-        response = `**Command received: "${text}"**\n\n_Error: Query out of operational bounds._\n\nI am restricted by protocol. I prefer not to answer questions outside of traffic operations, telemetry, or dispatch logistics. Please rephrase your query to fit command parameters.`;
-    }
-
-    setTimeout(() => {
-      setIsTyping(false);
-      setMessages(prev => [...prev, { role: 'assistant', content: response }]);
-    }, 1000);
   };
 
   return (
