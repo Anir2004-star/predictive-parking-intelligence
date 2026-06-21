@@ -8,6 +8,8 @@ const IncidentResponse = () => {
   const [dispatchStatus, setDispatchStatus] = useState('pending'); // 'pending', 'authorized', 'manual_review'
   const [currentTime, setCurrentTime] = useState('');
 
+  const [pastTimes, setPastTimes] = useState({ t1: '...', t2: '...', t3: '...' });
+
   useEffect(() => {
     const fetchTop = async () => {
       try {
@@ -23,12 +25,24 @@ const IncidentResponse = () => {
     // Set current time for the timestamp
     const now = new Date();
     setCurrentTime(`${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`);
+
+    const t3 = new Date(now.getTime() - 2 * 60000); // 2 mins ago
+    const t2 = new Date(t3.getTime() - 3 * 60000); // 5 mins ago
+    const t1 = new Date(t2.getTime() - 7 * 60000); // 12 mins ago
+
+    const formatTime = (d) => `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+    
+    setPastTimes({
+      t1: formatTime(t1),
+      t2: formatTime(t2),
+      t3: formatTime(t3)
+    });
   }, []);
 
   const timelineSteps = [
-    { time: '14:05', title: 'Violation Detected', desc: `Illegal parking detected near ${topHotspot ? topHotspot.locationName : 'outer ring road'}.`, status: 'past' },
-    { time: '14:12', title: 'Road Capacity Reduced', desc: 'Capacity dropped by 31% due to blockage.', status: 'past' },
-    { time: '14:15', title: 'Congestion Predicted', AI: true, desc: 'AI forecast: Severe gridlock in 20 mins.', status: dispatchStatus === 'pending' ? 'current' : 'past' },
+    { time: pastTimes.t1, title: 'Violation Detected', desc: `Illegal parking detected near ${topHotspot ? topHotspot.locationName : 'outer ring road'}.`, status: 'past' },
+    { time: pastTimes.t2, title: 'Road Capacity Reduced', desc: 'Capacity dropped by 31% due to blockage.', status: 'past' },
+    { time: pastTimes.t3, title: 'Congestion Predicted', AI: true, desc: 'AI forecast: Severe gridlock in 20 mins.', status: dispatchStatus === 'pending' ? 'current' : 'past' },
     { 
       time: dispatchStatus === 'authorized' ? currentTime : dispatchStatus === 'manual_review' ? currentTime : 'Pending', 
       title: dispatchStatus === 'manual_review' ? 'Manual Review Requested' : 'Tow Dispatched', 
