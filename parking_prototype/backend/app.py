@@ -47,21 +47,25 @@ def _get_predictions():
     current_hour = now.hour
     current_day = now.weekday()
     stations = le.classes_
-    predictions = []
     
-    for i, station in enumerate(stations):
+    # Vectorize predictions
+    station_encoded_list = le.transform(stations)
+    df_features = pd.DataFrame({
+        'police_station_encoded': station_encoded_list,
+        'day_of_week': [current_day] * len(stations),
+        'hour': [current_hour] * len(stations)
+    })
+    
+    preds = model.predict(df_features)
+    
+    predictions = []
+    for i, (station, pred) in enumerate(zip(stations, preds)):
         coords = STATION_COORDS.get(station, {
             "lat": 12.9716 + (hash(station) % 100) * 0.0005, 
             "lng": 77.5946 + ((hash(station) // 100) % 100) * 0.0005
         })
-        station_encoded = le.transform([station])[0]
-        features = pd.DataFrame([{
-            'police_station_encoded': station_encoded,
-            'day_of_week': current_day,
-            'hour': current_hour
-        }])
-        pred_count = model.predict(features)[0]
-        pred_count = max(5, int(pred_count * 15))
+        
+        pred_count = max(5, int(pred * 15))
         impact_score = min(99, int((pred_count / 100) * 100))
         raw_impact_score = impact_score * 50
         
@@ -90,20 +94,25 @@ def get_predict_timeline():
 
     current_day = datetime.datetime.now().weekday()
     stations = le.classes_
-    timeline = []
-
+    station_encoded_list = le.transform(stations)
+    
+    # Create all features at once for 24 hours
+    feature_list = []
     for hour in range(24):
-        hourly_total = 0
-        for station in stations:
-            station_encoded = le.transform([station])[0]
-            features = pd.DataFrame([{
+        for station_encoded in station_encoded_list:
+            feature_list.append({
                 'police_station_encoded': station_encoded,
                 'day_of_week': current_day,
                 'hour': hour
-            }])
-            pred_count = model.predict(features)[0]
-            hourly_total += max(5, int(pred_count * 15))
+            })
             
+    df_features = pd.DataFrame(feature_list)
+    predictions = model.predict(df_features)
+
+    timeline = []
+    for hour in range(24):
+        hour_preds = predictions[hour * len(stations) : (hour + 1) * len(stations)]
+        hourly_total = sum(max(5, int(p * 15)) for p in hour_preds)
         timeline.append({
             "time": f"{hour}:00",
             "demand": hourly_total,
