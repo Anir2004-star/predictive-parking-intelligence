@@ -6,8 +6,9 @@ const IncidentResponse = () => {
   const containerRef = useRef(null);
   const [allHotspots, setAllHotspots] = useState([]);
   const [topHotspot, setTopHotspot] = useState(null);
-  const [dispatchStatus, setDispatchStatus] = useState('pending'); // 'pending', 'authorized', 'manual_review'
+  const [dispatchStatus, setDispatchStatus] = useState('pending'); // 'pending', 'authorized', 'manual_review', 'recovered'
   const [currentTime, setCurrentTime] = useState('');
+  const [recoveryTime, setRecoveryTime] = useState('');
 
   const [pastTimes, setPastTimes] = useState({ t1: '...', t2: '...', t3: '...' });
 
@@ -46,16 +47,16 @@ const IncidentResponse = () => {
     { time: pastTimes.t2, title: 'Road Capacity Reduced', desc: 'Capacity dropped by 31% due to blockage.', status: 'past' },
     { time: pastTimes.t3, title: 'Congestion Predicted', AI: true, desc: 'AI forecast: Severe gridlock in 20 mins.', status: dispatchStatus === 'pending' ? 'current' : 'past' },
     { 
-      time: dispatchStatus === 'authorized' ? currentTime : dispatchStatus === 'manual_review' ? currentTime : 'Pending', 
+      time: (dispatchStatus === 'authorized' || dispatchStatus === 'recovered') ? currentTime : dispatchStatus === 'manual_review' ? currentTime : 'Pending', 
       title: dispatchStatus === 'manual_review' ? 'Manual Review Requested' : 'Tow Dispatched', 
-      desc: dispatchStatus === 'authorized' ? 'Tow unit #04 is en route.' : dispatchStatus === 'manual_review' ? 'Sent to Senior Commander for review.' : 'Awaiting command center approval.', 
-      status: dispatchStatus === 'authorized' ? 'current' : dispatchStatus === 'manual_review' ? 'current' : 'future' 
+      desc: (dispatchStatus === 'authorized' || dispatchStatus === 'recovered') ? 'Tow unit #04 arrived on scene.' : dispatchStatus === 'manual_review' ? 'Sent to Senior Commander for review.' : 'Awaiting command center approval.', 
+      status: dispatchStatus === 'recovered' ? 'past' : dispatchStatus === 'authorized' ? 'current' : dispatchStatus === 'manual_review' ? 'current' : 'future' 
     },
     { 
-      time: 'Pending', 
+      time: dispatchStatus === 'recovered' ? recoveryTime : 'Pending', 
       title: 'Recovery Achieved', 
-      desc: 'Restoration of normal traffic flow.', 
-      status: 'future' 
+      desc: dispatchStatus === 'recovered' ? 'Restoration of normal traffic flow.' : 'Awaiting tow completion.', 
+      status: dispatchStatus === 'recovered' ? 'current' : 'future' 
     }
   ];
 
@@ -74,6 +75,13 @@ const IncidentResponse = () => {
 
   const handleAuthorize = () => {
     setDispatchStatus('authorized');
+    
+    // Simulate recovery progression for the demo
+    setTimeout(() => {
+      const now = new Date();
+      setRecoveryTime(`${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`);
+      setDispatchStatus('recovered');
+    }, 4000);
   };
 
   const handleManualReview = () => {
@@ -153,7 +161,7 @@ const IncidentResponse = () => {
                   disabled={dispatchStatus !== 'pending'}
                   className="primary-btn" 
                   style={{ flex: 1, opacity: dispatchStatus !== 'pending' ? 0.5 : 1, cursor: dispatchStatus !== 'pending' ? 'not-allowed' : 'pointer' }}>
-                  {dispatchStatus === 'authorized' ? 'Authorized ✓' : 'Authorize Dispatch'}
+                  {(dispatchStatus === 'authorized' || dispatchStatus === 'recovered') ? 'Authorized ✓' : 'Authorize Dispatch'}
                </button>
                <button 
                   onClick={handleManualReview}
