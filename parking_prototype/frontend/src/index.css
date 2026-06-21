@@ -2,22 +2,22 @@
 
 :root {
   /* Global Colors */
-  --bg-color: #F7F8FA;
-  --sidebar-bg: #FFFFFF;
-  --card-bg: #FFFFFF;
-  --border-color: #E5E7EB;
+  --bg-color: #f8fafc;
+  --sidebar-bg: #ffffff;
+  --card-bg: #ffffff;
+  --border-color: #e2e8f0;
   
   /* Text Colors */
-  --text-primary: #111827;
-  --text-secondary: #6B7280;
-  --text-normal: #4B5563;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-normal: #334155;
   
   /* Semantic Colors */
-  --accent-blue: #2563EB;
-  --success: #16A34A;
-  --warning: #F59E0B;
-  --danger: #DC2626;
-  --light-blue-bg: #EFF6FF;
+  --accent-blue: #0284c7; /* Strict deeper blue */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --light-blue-bg: #f0f9ff;
 }
 
 * {
@@ -129,13 +129,13 @@ body {
   flex-direction: column;
 }
 
-/* Premium Government Cards */
+/* Developer Aesthetic Cards */
 .premium-card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: 18px;
+  border-radius: 8px; /* Crisp corners */
   padding: 24px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* Very subtle shadow */
 }
 
 /* Responsive Grid container for cards */

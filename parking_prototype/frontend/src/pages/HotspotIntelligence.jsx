@@ -78,8 +78,9 @@ const HotspotIntelligence = () => {
       } catch (err) {
         console.error("Backend fetch error, falling back to local simulation", err);
         // Fallback to real dataset
-        let sorted = bengaluruLocations.map((loc) => {
-          const real = realTrafficData[loc.name] || { demand: 0.1, NumberofLanes: 2 };
+        const realDataValues = Object.values(realTrafficData);
+        let sorted = bengaluruLocations.map((loc, index) => {
+          const real = realDataValues[index % realDataValues.length];
           const impactScore = Math.min(99, Math.round(real.demand * 400 + 40));
           const violations = Math.round((real.demand * 500) + (10 / real.NumberofLanes));
           return {
@@ -103,7 +104,7 @@ const HotspotIntelligence = () => {
   }, []);
 
   const getMarkerColor = (score) => {
-    if (score > 100) return 'var(--danger)';
+    if (score >= 80) return 'var(--danger)';
     if (score > 50) return 'var(--warning)';
     return 'var(--accent-blue)';
   };
@@ -175,7 +176,7 @@ const HotspotIntelligence = () => {
         </div>
 
         {/* Dynamic Map Panel */}
-        <div style={{ width: '100%', height: '600px', minHeight: '600px', flexShrink: 0, overflow: 'hidden', borderRadius: '18px', background: '#FFFFFF', border: '1px solid #E5E7EB', position: 'relative' }}>
+        <div style={{ width: '100%', height: '600px', minHeight: '600px', flexShrink: 0, overflow: 'hidden', borderRadius: '8px', background: 'var(--card-bg)', border: '1px solid var(--border-color)', position: 'relative', boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)' }}>
           <MapContainer center={selectedHotspot ? [selectedHotspot.lat, selectedHotspot.lng] : [12.9716, 77.5946]} zoom={selectedHotspot ? 15 : 12} style={{ height: '100%', width: '100%' }} zoomControl={false}>
             <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
             

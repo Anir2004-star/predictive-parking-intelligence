@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -41,14 +41,15 @@ const CommandCenter = () => {
 
   // Live Simulation: Increment violations realistically every few seconds to prove the system is "live"
   useEffect(() => {
-    if (initialTodayViolations > 0 && todayViolations === 0) {
-      setTodayViolations(initialTodayViolations);
-      setActiveHotspotsCount(hotspots.length);
-    }
-    
     const interval = setInterval(() => {
-      setTodayViolations(prev => Math.max(initialTodayViolations - 500, prev + (Math.floor(Math.random() * 9) - 4)));
-      setActiveHotspotsCount(prev => Math.max(100, prev + (Math.floor(Math.random() * 5) - 2)));
+      setTodayViolations(prev => {
+        if (prev <= 0 && initialTodayViolations > 0) return initialTodayViolations;
+        return Math.max(initialTodayViolations - 500, prev + (Math.floor(Math.random() * 9) - 4));
+      });
+      setActiveHotspotsCount(prev => {
+        if (prev <= 0 && hotspots.length > 0) return hotspots.length;
+        return Math.max(100, prev + (Math.floor(Math.random() * 5) - 2));
+      });
       setCapacityLost(prev => {
         const nextVal = parseFloat(prev) + (Math.random() * 1.0 - 0.5);
         return Math.min(Math.max(nextVal, 10), 80).toFixed(1);
@@ -66,7 +67,7 @@ const CommandCenter = () => {
       }));
     }, 3000);
     return () => clearInterval(interval);
-  }, [initialTodayViolations, hotspots.length, todayViolations]);
+  }, [initialTodayViolations, hotspots.length]);
 
   const kpis = [
     { label: "Today's Violations", value: todayViolations > 0 ? todayViolations.toLocaleString() : "...",  trend: `↑ ${trendViolations}% vs Yesterday`, trendColor: "var(--danger)" },
@@ -76,23 +77,26 @@ const CommandCenter = () => {
   ];
 
   // Dynamic Insights list from REAL CSV DATA
-  const insightsList = realLocations.slice(0, 10).map(loc => {
-    const real = realTrafficData[loc];
-    const riskScore = Math.min(99, Math.round(real.demand * 400 + 40));
-    const violations = Math.round((real.demand * 500) + (10 / real.NumberofLanes));
-    const capLost = Math.min(85, Math.max(15, Math.round((4 / real.NumberofLanes) * 12 + (real.demand * 100))));
-    
-    return {
-      location: loc,
-      riskScore,
-      violations,
-      capacityLost: `${capLost}%`,
-      estDelay: `${Math.round(capLost * 0.5)} mins`,
-      commuters: Math.round(real.demand * 150000 + 3000).toLocaleString(),
-      predictedGrowth: `+${Math.round(real.demand * 40)}%`,
-      action: riskScore > 90 ? "Deploy Heavy Crane" : (riskScore > 80 ? "Deploy Tow Unit" : "Dispatch Patrol")
-    };
-  });
+  const insightsList = useMemo(() => {
+    return realLocations.slice(0, 10).map(loc => {
+      const real = realTrafficData[loc];
+      const riskScore = Math.min(99, Math.round(real.demand * 400 + 40));
+      const violations = Math.round((real.demand * 500) + (10 / real.NumberofLanes));
+      const capLost = Math.min(85, Math.max(15, Math.round((4 / real.NumberofLanes) * 12 + (real.demand * 100))));
+      
+      return {
+        location: loc,
+        riskScore,
+        violations,
+        capacityLost: `${capLost}%`,
+        estDelay: `${Math.round(capLost * 0.5)} mins`,
+        commuters: Math.round(real.demand * 150000 + 3000).toLocaleString(),
+        predictedGrowth: `+${Math.round(real.demand * 40)}%`,
+        action: riskScore > 90 ? "Deploy Heavy Crane" : (riskScore > 80 ? "Deploy Tow Unit" : "Dispatch Patrol")
+      };
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const trafficLines = [
     { id: 1, positions: [[12.9856, 77.6039], [12.9750, 77.6062], [12.9645, 77.5982], [12.9372, 77.6269]], density: 95, width: 30, peak: 100, desc: "Shivajinagar - MG - Richmond" },
@@ -187,10 +191,11 @@ const CommandCenter = () => {
              onClick={() => setDigitalTwinMode(!digitalTwinMode)}
              style={{ 
                background: digitalTwinMode ? 'var(--accent-blue)' : 'var(--card-bg)',
-               color: digitalTwinMode ? '#fff' : 'var(--accent-blue)',
-               border: '1px solid var(--accent-blue)',
-               padding: '10px 20px', borderRadius: '8px', fontWeight: 600, cursor: 'pointer',
-               display: 'flex', alignItems: 'center', gap: '8px'
+               color: digitalTwinMode ? '#fff' : 'var(--text-primary)',
+               border: `1px solid ${digitalTwinMode ? 'var(--accent-blue)' : 'var(--border-color)'}`,
+               padding: '8px 16px', borderRadius: '6px', fontWeight: 500, cursor: 'pointer',
+               display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem',
+               boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)'
              }}
            >
               {digitalTwinMode ? 'Exit Digital Twin' : 'Digital Twin View'}
@@ -215,10 +220,11 @@ const CommandCenter = () => {
         minHeight: '500px',
         flexShrink: 0,
         overflow: 'hidden', 
-        borderRadius: '18px', 
-        background: '#FFFFFF', 
-        border: '1px solid #E5E7EB', 
-        position: 'relative' 
+        borderRadius: '8px', 
+        background: 'var(--card-bg)', 
+        border: '1px solid var(--border-color)', 
+        position: 'relative',
+        boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)'
       }}>
         <MapContainer center={[12.9716, 77.5946]} zoom={13} style={{ height: '100%', width: '100%' }} zoomControl={false}>
           <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
