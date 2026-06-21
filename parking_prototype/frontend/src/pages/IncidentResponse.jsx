@@ -4,6 +4,7 @@ import gsap from 'gsap';
 
 const IncidentResponse = () => {
   const containerRef = useRef(null);
+  const [allHotspots, setAllHotspots] = useState([]);
   const [topHotspot, setTopHotspot] = useState(null);
   const [dispatchStatus, setDispatchStatus] = useState('pending'); // 'pending', 'authorized', 'manual_review'
   const [currentTime, setCurrentTime] = useState('');
@@ -16,6 +17,7 @@ const IncidentResponse = () => {
         const res = await fetch('http://localhost:5000/api/hotspots');
         const data = await res.json();
         if(data.hotspots && data.hotspots.length > 0) {
+          setAllHotspots(data.hotspots);
           setTopHotspot(data.hotspots[0]);
         }
       } catch (e) { console.error(e); }
@@ -81,9 +83,29 @@ const IncidentResponse = () => {
   return (
     <div className="page-container" ref={containerRef}>
       
-      <div className="anim-fade" style={{ marginBottom: '8px' }}>
-        <h1 className="page-title" style={{ margin: 0 }}>Incident Response</h1>
-        <span style={{ color: 'var(--text-secondary)' }}>Live operations workflow and resource dispatch tracking.</span>
+      <div className="anim-fade" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '24px' }}>
+        <div>
+          <h1 className="page-title" style={{ margin: 0 }}>Incident Response</h1>
+          <span style={{ color: 'var(--text-secondary)' }}>Live operations workflow and resource dispatch tracking.</span>
+        </div>
+        <div>
+          <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginRight: '8px' }}>Select Monitored Location:</label>
+          <select 
+            value={topHotspot?.locationName || ''} 
+            onChange={(e) => {
+              const selected = allHotspots.find(h => h.locationName === e.target.value);
+              setTopHotspot(selected);
+              setDispatchStatus('pending'); // Reset timeline when location changes
+            }}
+            style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid var(--border-color)', outline: 'none', background: 'var(--card-bg)', cursor: 'pointer' }}
+          >
+            {allHotspots.map(h => (
+              <option key={h.locationName} value={h.locationName}>
+                {h.locationName} ({h.total_violations} Violations)
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
