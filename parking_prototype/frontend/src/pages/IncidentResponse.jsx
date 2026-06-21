@@ -5,6 +5,8 @@ import gsap from 'gsap';
 const IncidentResponse = () => {
   const containerRef = useRef(null);
   const [topHotspot, setTopHotspot] = useState(null);
+  const [dispatchStatus, setDispatchStatus] = useState('pending'); // 'pending', 'authorized', 'manual_review'
+  const [currentTime, setCurrentTime] = useState('');
 
   useEffect(() => {
     const fetchTop = async () => {
@@ -17,14 +19,28 @@ const IncidentResponse = () => {
       } catch (e) { console.error(e); }
     };
     fetchTop();
+    
+    // Set current time for the timestamp
+    const now = new Date();
+    setCurrentTime(`${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`);
   }, []);
 
   const timelineSteps = [
     { time: '14:05', title: 'Violation Detected', desc: `Illegal parking detected near ${topHotspot ? topHotspot.locationName : 'outer ring road'}.`, status: 'past' },
     { time: '14:12', title: 'Road Capacity Reduced', desc: 'Capacity dropped by 31% due to blockage.', status: 'past' },
-    { time: '14:15', title: 'Congestion Predicted', AI: true, desc: 'AI forecast: Severe gridlock in 20 mins.', status: 'current' },
-    { time: 'Pending', title: 'Tow Dispatched', desc: 'Awaiting command center approval.', status: 'future' },
-    { time: 'Pending', title: 'Recovery Achieved', desc: 'Restoration of normal traffic flow.', status: 'future' }
+    { time: '14:15', title: 'Congestion Predicted', AI: true, desc: 'AI forecast: Severe gridlock in 20 mins.', status: dispatchStatus === 'pending' ? 'current' : 'past' },
+    { 
+      time: dispatchStatus === 'authorized' ? currentTime : dispatchStatus === 'manual_review' ? currentTime : 'Pending', 
+      title: dispatchStatus === 'manual_review' ? 'Manual Review Requested' : 'Tow Dispatched', 
+      desc: dispatchStatus === 'authorized' ? 'Tow unit #04 is en route.' : dispatchStatus === 'manual_review' ? 'Sent to Senior Commander for review.' : 'Awaiting command center approval.', 
+      status: dispatchStatus === 'authorized' ? 'current' : dispatchStatus === 'manual_review' ? 'current' : 'future' 
+    },
+    { 
+      time: 'Pending', 
+      title: 'Recovery Achieved', 
+      desc: 'Restoration of normal traffic flow.', 
+      status: 'future' 
+    }
   ];
 
   useGSAP(() => {
@@ -36,6 +52,17 @@ const IncidentResponse = () => {
       x: -20, opacity: 0, duration: 0.5, stagger: 0.15, ease: 'power2.out', delay: 0.3
     });
   }, { scope: containerRef });
+
+  const delayWithout = topHotspot ? Math.max(25, Math.round(topHotspot.total_violations / 4)) : 42;
+  const delayWith = topHotspot ? Math.max(8, Math.round(topHotspot.total_violations / 15)) : 12;
+
+  const handleAuthorize = () => {
+    setDispatchStatus('authorized');
+  };
+
+  const handleManualReview = () => {
+    setDispatchStatus('manual_review');
+  };
 
   return (
     <div className="page-container" ref={containerRef}>
@@ -85,8 +112,20 @@ const IncidentResponse = () => {
                Deploying Heavy Tow Unit #04 to {topHotspot ? topHotspot.locationName : 'Marathahalli Bridge'} will clear the blockage before peak traffic hits.
              </p>
              <div style={{ display: 'flex', gap: '16px' }}>
-               <button className="primary-btn" style={{ flex: 1 }}>Authorize Dispatch</button>
-               <button className="secondary-btn" style={{ flex: 1 }}>Request Manual Review</button>
+               <button 
+                  onClick={handleAuthorize} 
+                  disabled={dispatchStatus !== 'pending'}
+                  className="primary-btn" 
+                  style={{ flex: 1, opacity: dispatchStatus !== 'pending' ? 0.5 : 1, cursor: dispatchStatus !== 'pending' ? 'not-allowed' : 'pointer' }}>
+                  {dispatchStatus === 'authorized' ? 'Authorized ✓' : 'Authorize Dispatch'}
+               </button>
+               <button 
+                  onClick={handleManualReview}
+                  disabled={dispatchStatus !== 'pending'}
+                  className="secondary-btn" 
+                  style={{ flex: 1, opacity: dispatchStatus !== 'pending' ? 0.5 : 1, cursor: dispatchStatus !== 'pending' ? 'not-allowed' : 'pointer' }}>
+                  {dispatchStatus === 'manual_review' ? 'In Review ⏳' : 'Request Manual Review'}
+               </button>
              </div>
           </div>
 
@@ -96,13 +135,13 @@ const IncidentResponse = () => {
              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', height: '100%' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#FEF2F2', padding: '24px', borderRadius: '8px', border: '1px solid #FCA5A5' }}>
                   <div style={{ fontSize: '13px', color: 'var(--danger)', fontWeight: 600, marginBottom: '8px' }}>Without Action</div>
-                  <div className="metric-number" style={{ color: 'var(--danger)' }}>42 mins</div>
+                  <div className="metric-number" style={{ color: 'var(--danger)' }}>{delayWithout} mins</div>
                   <div style={{ fontSize: '12px', color: 'var(--danger)', marginTop: '8px' }}>Peak Travel Delay</div>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#F0FDF4', padding: '24px', borderRadius: '8px', border: '1px solid #86EFAC' }}>
                   <div style={{ fontSize: '13px', color: 'var(--success)', fontWeight: 600, marginBottom: '8px' }}>With AI Dispatch</div>
-                  <div className="metric-number" style={{ color: 'var(--success)' }}>12 mins</div>
+                  <div className="metric-number" style={{ color: 'var(--success)' }}>{delayWith} mins</div>
                   <div style={{ fontSize: '12px', color: 'var(--success)', marginTop: '8px' }}>Peak Travel Delay</div>
                 </div>
              </div>
