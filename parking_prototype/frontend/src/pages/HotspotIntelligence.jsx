@@ -41,7 +41,7 @@ const HotspotIntelligence = () => {
       try {
         const response = await fetch('http://localhost:5000/api/hotspots');
         const data = await response.json();
-        let rawHotspots = data.hotspots.sort((a,b) => b.impact_score - a.impact_score).slice(0, 40);
+        let rawHotspots = data.hotspots.sort((a,b) => b.impact_score - a.impact_score).slice(0, 10);
         
         let sorted = rawHotspots.map((hs, i) => {
            const loc = bengaluruLocations[i % bengaluruLocations.length];
@@ -101,7 +101,7 @@ const HotspotIntelligence = () => {
       
       <div className="anim-fade" style={{ marginBottom: '8px' }}>
         <h1 className="page-title" style={{ margin: 0 }}>Hotspot Intelligence</h1>
-        <span style={{ color: 'var(--text-secondary)' }}>Top 40 Critical Congestion Nodes requiring immediate enforcement.</span>
+        <span style={{ color: 'var(--text-secondary)' }}>Top 10 Critical Congestion Nodes requiring immediate enforcement.</span>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '400px 1fr', gap: '24px', flex: 1, minHeight: 0 }}>
