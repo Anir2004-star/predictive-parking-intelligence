@@ -41,11 +41,13 @@ const IncidentResponse = () => {
       t3: formatTime(t3)
     });
   }, []);
+  const delayWithout = topHotspot ? Math.round(12 + (topHotspot.total_violations * 0.42)) : 42;
+  const delayWith = topHotspot ? Math.round(4 + (topHotspot.total_violations * 0.12)) : 12;
 
   const timelineSteps = [
     { time: pastTimes.t1, title: 'Violation Detected', desc: `Illegal parking detected near ${topHotspot ? topHotspot.locationName : 'outer ring road'}.`, status: 'past' },
     { time: pastTimes.t2, title: 'Road Capacity Reduced', desc: 'Capacity dropped by 31% due to blockage.', status: 'past' },
-    { time: pastTimes.t3, title: 'Congestion Predicted', AI: true, desc: 'AI forecast: Severe gridlock in 20 mins.', status: dispatchStatus === 'pending' ? 'current' : 'past' },
+    { time: pastTimes.t3, title: 'Congestion Predicted', AI: true, desc: `AI forecast: Severe gridlock in ${delayWithout} mins.`, status: dispatchStatus === 'pending' ? 'current' : 'past' },
     { 
       time: (dispatchStatus === 'authorized' || dispatchStatus === 'recovered') ? currentTime : dispatchStatus === 'manual_review' ? currentTime : 'Pending', 
       title: dispatchStatus === 'manual_review' ? 'Manual Review Requested' : 'Tow Dispatched', 
@@ -70,8 +72,6 @@ const IncidentResponse = () => {
     });
   }, { scope: containerRef });
 
-  const delayWithout = topHotspot ? Math.round(12 + (topHotspot.total_violations * 0.42)) : 42;
-  const delayWith = topHotspot ? Math.round(4 + (topHotspot.total_violations * 0.12)) : 12;
 
   const handleAuthorize = () => {
     setDispatchStatus('authorized');
