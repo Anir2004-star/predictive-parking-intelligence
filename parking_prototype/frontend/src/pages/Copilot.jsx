@@ -189,20 +189,6 @@ const Copilot = () => {
             </div>
           </div>
 
-          <div className="card anim-fade" style={{ flex: 1, overflowY: 'auto' }}>
-            <h2 className="card-title" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', marginBottom: '16px' }}>Recent Alerts</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-               {recentAlerts.map((alert, i) => (
-                 <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                   <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: `var(--${alert.type})`, marginTop: '6px', flexShrink: 0 }}></div>
-                   <div>
-                     <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>{alert.time}</div>
-                     <div style={{ fontSize: '13px', color: 'var(--text-primary)' }}>{alert.msg}</div>
-                   </div>
-                 </div>
-               ))}
-            </div>
-          </div>
 
         </div>
       </div>
