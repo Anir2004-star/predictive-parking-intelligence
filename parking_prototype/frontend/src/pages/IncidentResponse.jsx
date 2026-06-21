@@ -165,10 +165,10 @@ const IncidentResponse = () => {
              </div>
           </div>
 
-          <div className="card anim-fade" style={{ flex: 1 }}>
+          <div className="card anim-fade" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
              <h2 className="card-title" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', marginBottom: '24px' }}>Deployment Impact (Forecast)</h2>
              
-             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', height: '100%' }}>
+             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', flex: 1 }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#FEF2F2', padding: '24px', borderRadius: '8px', border: '1px solid #FCA5A5' }}>
                   <div style={{ fontSize: '13px', color: 'var(--danger)', fontWeight: 600, marginBottom: '8px' }}>Without Action</div>
                   <div className="metric-number" style={{ color: 'var(--danger)' }}>{delayWithout} mins</div>
