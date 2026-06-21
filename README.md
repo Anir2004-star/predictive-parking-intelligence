@@ -36,7 +36,7 @@ The predictive engine utilizes state-of-the-art tree-based regressors (XGBoost /
 
 ---
 
-## 📂 Repository Structure
+## 📂 Folder Structure
 
 ```text
 📦 Flipkart
