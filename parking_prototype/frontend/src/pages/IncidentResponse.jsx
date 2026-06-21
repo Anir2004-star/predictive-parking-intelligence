@@ -78,8 +78,9 @@ const IncidentResponse = () => {
     
     // Simulate recovery progression for the demo
     setTimeout(() => {
-      const now = new Date();
-      setRecoveryTime(`${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`);
+      const recoveryDate = new Date();
+      recoveryDate.setMinutes(recoveryDate.getMinutes() + delayWith);
+      setRecoveryTime(`${recoveryDate.getHours().toString().padStart(2, '0')}:${recoveryDate.getMinutes().toString().padStart(2, '0')}`);
       setDispatchStatus('recovered');
     }, 4000);
   };
