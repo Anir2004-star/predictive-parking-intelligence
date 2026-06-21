@@ -92,8 +92,14 @@ def get_predict_timeline():
     if model is None:
         return jsonify({"error": "Model not loaded"}), 500
 
+    station_filter = request.args.get('station')
     current_day = datetime.datetime.now().weekday()
-    stations = le.classes_
+    
+    if station_filter and station_filter in le.classes_:
+        stations = [station_filter]
+    else:
+        stations = le.classes_
+        
     station_encoded_list = le.transform(stations)
     
     # Create all features at once for 24 hours

@@ -8,7 +8,9 @@ import gsap from 'gsap';
 const PredictiveAnalytics = () => {
   const [activeTab, setActiveTab] = useState('Current');
   const [timelineData, setTimelineData] = useState([]);
+  const [allHotspots, setAllHotspots] = useState([]);
   const [hotspotsData, setHotspotsData] = useState([]);
+  const [selectedStation, setSelectedStation] = useState('All Stations');
   const containerRef = useRef(null);
   
   const tabs = ['Current', '+30 minutes', '+1 hour', '+3 hours', '+24 hours'];
@@ -25,21 +27,32 @@ const PredictiveAnalytics = () => {
   };
 
   useEffect(() => {
-    const fetchPredictions = async () => {
+    const fetchHotspots = async () => {
       try {
-        const timelineRes = await fetch('http://localhost:5000/api/predict_timeline');
-        const tData = await timelineRes.json();
-        if(tData.timeline) setTimelineData(tData.timeline);
-        
         const hsRes = await fetch('http://localhost:5000/api/hotspots');
         const hsData = await hsRes.json();
-        if(hsData.hotspots) setHotspotsData(hsData.hotspots.slice(0, 5)); // top 5
-      } catch (err) {
-        console.error("Error fetching ML predictions", err);
-      }
+        if(hsData.hotspots) {
+            setAllHotspots(hsData.hotspots);
+            setHotspotsData(hsData.hotspots.slice(0, 5)); // top 5 for map
+        }
+      } catch (err) { console.error(err); }
     };
-    fetchPredictions();
+    fetchHotspots();
   }, []);
+
+  useEffect(() => {
+    const fetchTimeline = async () => {
+      try {
+        const url = selectedStation === 'All Stations' 
+          ? 'http://localhost:5000/api/predict_timeline' 
+          : `http://localhost:5000/api/predict_timeline?station=${encodeURIComponent(selectedStation)}`;
+        const timelineRes = await fetch(url);
+        const tData = await timelineRes.json();
+        if(tData.timeline) setTimelineData(tData.timeline);
+      } catch (err) { console.error("Error fetching ML predictions", err); }
+    };
+    fetchTimeline();
+  }, [selectedStation]);
 
   // Scale the chart data based on the selected future tab
   const chartData = timelineData.map(d => ({
@@ -56,9 +69,26 @@ const PredictiveAnalytics = () => {
   return (
     <div className="page-container" ref={containerRef}>
       
-      <div className="anim-fade" style={{ marginBottom: '8px' }}>
-        <h1 className="page-title" style={{ margin: 0 }}>Predictive Analytics</h1>
-        <span style={{ color: 'var(--text-secondary)' }}>AI forecasting model projecting congestion and resource demand.</span>
+      <div className="anim-fade" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '24px' }}>
+        <div>
+          <h1 className="page-title" style={{ margin: 0 }}>Predictive Analytics</h1>
+          <span style={{ color: 'var(--text-secondary)' }}>AI forecasting model projecting congestion and resource demand.</span>
+        </div>
+        <div>
+          <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginRight: '8px' }}>Select Location:</label>
+          <select 
+            value={selectedStation} 
+            onChange={(e) => setSelectedStation(e.target.value)}
+            style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid var(--border-color)', outline: 'none', background: 'var(--card-bg)', cursor: 'pointer' }}
+          >
+            <option value="All Stations">All Stations (City-Wide)</option>
+            {allHotspots.map(h => (
+              <option key={h.locationName} value={h.locationName}>
+                {h.locationName}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div className="cards-grid anim-fade" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
