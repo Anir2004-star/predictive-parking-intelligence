@@ -11,7 +11,6 @@ const Navigation = () => {
     { path: '/predictive', label: 'Predictive Analytics' },
     { path: '/incident-response', label: 'Traffic Incident Command Center' },
     { path: '/copilot', label: 'Parking Intelligence Copilot' },
-    { path: '/model-analytics', label: 'ML Model Analytics' },
   ];
 
   return (

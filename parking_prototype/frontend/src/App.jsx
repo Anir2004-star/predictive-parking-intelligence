@@ -8,7 +8,6 @@ import PredictiveAnalytics from './pages/PredictiveAnalytics';
 import IncidentResponse from './pages/IncidentResponse';
 import Copilot from './pages/Copilot';
 import Home from './pages/Home';
-import ModelAnalytics from './pages/ModelAnalytics';
 
 const Layout = () => {
   const location = useLocation();
@@ -35,7 +34,6 @@ const Layout = () => {
             <Route path="/predictive" element={<PredictiveAnalytics />} />
             <Route path="/incident-response" element={<IncidentResponse />} />
             <Route path="/copilot" element={<Copilot />} />
-            <Route path="/model-analytics" element={<ModelAnalytics />} />
           </Routes>
         </div>
       </main>
