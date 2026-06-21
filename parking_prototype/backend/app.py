@@ -91,5 +91,34 @@ def get_hotspots():
 
     return jsonify({"hotspots": predictions})
 
+@app.route('/api/predict_timeline', methods=['GET'])
+def get_predict_timeline():
+    if model is None:
+        return jsonify({"error": "Model not loaded"}), 500
+
+    current_day = datetime.datetime.now().weekday()
+    stations = le.classes_
+    timeline = []
+
+    for hour in range(24):
+        hourly_total = 0
+        for station in stations:
+            station_encoded = le.transform([station])[0]
+            features = pd.DataFrame([{
+                'police_station_encoded': station_encoded,
+                'day_of_week': current_day,
+                'hour': hour
+            }])
+            pred_count = model.predict(features)[0]
+            hourly_total += max(5, int(pred_count * 15))
+            
+        timeline.append({
+            "time": f"{hour}:00",
+            "demand": hourly_total,
+            "confidence": [int(hourly_total * 0.92), int(hourly_total * 1.08)]
+        })
+
+    return jsonify({"timeline": timeline})
+
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

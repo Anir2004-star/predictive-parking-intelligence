@@ -1,12 +1,26 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 
 const IncidentResponse = () => {
   const containerRef = useRef(null);
+  const [topHotspot, setTopHotspot] = useState(null);
+
+  useEffect(() => {
+    const fetchTop = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/hotspots');
+        const data = await res.json();
+        if(data.hotspots && data.hotspots.length > 0) {
+          setTopHotspot(data.hotspots[0]);
+        }
+      } catch (e) { console.error(e); }
+    };
+    fetchTop();
+  }, []);
 
   const timelineSteps = [
-    { time: '14:05', title: 'Violation Detected', desc: 'Illegal parking detected on outer ring road.', status: 'past' },
+    { time: '14:05', title: 'Violation Detected', desc: `Illegal parking detected near ${topHotspot ? topHotspot.locationName : 'outer ring road'}.`, status: 'past' },
     { time: '14:12', title: 'Road Capacity Reduced', desc: 'Capacity dropped by 31% due to blockage.', status: 'past' },
     { time: '14:15', title: 'Congestion Predicted', AI: true, desc: 'AI forecast: Severe gridlock in 20 mins.', status: 'current' },
     { time: 'Pending', title: 'Tow Dispatched', desc: 'Awaiting command center approval.', status: 'future' },
@@ -68,7 +82,7 @@ const IncidentResponse = () => {
           <div className="card anim-fade" style={{ background: '#F8FAFC' }}>
              <h2 className="card-title" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', marginBottom: '16px' }}>AI Dispatch Recommendation</h2>
              <p style={{ fontSize: '14px', marginBottom: '24px', color: 'var(--text-secondary)' }}>
-               Deploying Heavy Tow Unit #04 to Marathahalli Bridge will clear the blockage before peak traffic hits.
+               Deploying Heavy Tow Unit #04 to {topHotspot ? topHotspot.locationName : 'Marathahalli Bridge'} will clear the blockage before peak traffic hits.
              </p>
              <div style={{ display: 'flex', gap: '16px' }}>
                <button className="primary-btn" style={{ flex: 1 }}>Authorize Dispatch</button>
