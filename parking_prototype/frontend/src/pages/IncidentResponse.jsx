@@ -44,15 +44,19 @@ const IncidentResponse = () => {
   }, []);
   const delayWithout = topHotspot ? Math.round(12 + (topHotspot.total_violations * 0.42)) : 42;
   const delayWith = topHotspot ? Math.round(4 + (topHotspot.total_violations * 0.12)) : 12;
+  const capacityDrop = topHotspot ? Math.round(15 + (topHotspot.total_violations * 0.18)) : 31;
+  
+  // Deterministic tow unit based on location string length so it's consistent
+  const towUnit = topHotspot ? (topHotspot.locationName.length % 12) + 1 : 4;
 
   const timelineSteps = [
     { time: pastTimes.t1, title: 'Violation Detected', desc: `Illegal parking detected near ${topHotspot ? topHotspot.locationName : 'outer ring road'}.`, status: 'past' },
-    { time: pastTimes.t2, title: 'Road Capacity Reduced', desc: 'Capacity dropped by 31% due to blockage.', status: 'past' },
+    { time: pastTimes.t2, title: 'Road Capacity Reduced', desc: `Capacity dropped by ${capacityDrop}% due to blockage.`, status: 'past' },
     { time: pastTimes.t3, title: 'Congestion Predicted', AI: true, desc: `AI forecast: Severe gridlock in ${delayWithout} mins.`, status: dispatchStatus === 'pending' ? 'current' : 'past' },
     { 
       time: (dispatchStatus === 'authorized' || dispatchStatus === 'recovered') ? currentTime : dispatchStatus === 'manual_review' ? currentTime : 'Pending', 
       title: dispatchStatus === 'manual_review' ? 'Manual Review Requested' : 'Tow Dispatched', 
-      desc: (dispatchStatus === 'authorized' || dispatchStatus === 'recovered') ? 'Tow unit #04 arrived on scene.' : dispatchStatus === 'manual_review' ? 'Sent to Senior Commander for review.' : 'Awaiting command center approval.', 
+      desc: (dispatchStatus === 'authorized' || dispatchStatus === 'recovered') ? `Tow unit #${towUnit.toString().padStart(2, '0')} arrived on scene.` : dispatchStatus === 'manual_review' ? 'Sent to Senior Commander for review.' : 'Awaiting command center approval.', 
       status: dispatchStatus === 'recovered' ? 'past' : dispatchStatus === 'authorized' ? 'current' : dispatchStatus === 'manual_review' ? 'current' : 'future' 
     },
     { 
@@ -159,7 +163,7 @@ const IncidentResponse = () => {
           <div className="card anim-fade" style={{ background: '#F8FAFC' }}>
              <h2 className="card-title" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', marginBottom: '16px' }}>AI Dispatch Recommendation</h2>
              <p style={{ fontSize: '14px', marginBottom: '24px', color: 'var(--text-secondary)' }}>
-               Deploying Heavy Tow Unit #04 to {topHotspot ? topHotspot.locationName : 'Marathahalli Bridge'} will clear the blockage before peak traffic hits.
+               Deploying Heavy Tow Unit #{towUnit.toString().padStart(2, '0')} to {topHotspot ? topHotspot.locationName : 'Marathahalli Bridge'} will clear the blockage before peak traffic hits.
              </p>
              <div style={{ display: 'flex', gap: '16px' }}>
                <button 
