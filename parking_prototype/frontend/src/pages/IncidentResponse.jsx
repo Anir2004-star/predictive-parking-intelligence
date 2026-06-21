@@ -69,8 +69,8 @@ const IncidentResponse = () => {
     });
   }, { scope: containerRef });
 
-  const delayWithout = topHotspot ? Math.max(25, Math.round(topHotspot.total_violations / 4)) : 42;
-  const delayWith = topHotspot ? Math.max(8, Math.round(topHotspot.total_violations / 15)) : 12;
+  const delayWithout = topHotspot ? Math.round(12 + (topHotspot.total_violations * 0.42)) : 42;
+  const delayWith = topHotspot ? Math.round(4 + (topHotspot.total_violations * 0.12)) : 12;
 
   const handleAuthorize = () => {
     setDispatchStatus('authorized');
