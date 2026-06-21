@@ -43,14 +43,30 @@ The predictive engine utilizes state-of-the-art tree-based regressors (XGBoost /
  ┣ 📂 parking_prototype/        # The Full Web Application
  ┃ ┣ 📂 frontend/               # React / Vite SPA Dashboard
  ┃ ┃ ┣ 📂 src/
- ┃ ┃ ┃ ┣ 📂 pages/              # (CommandCenter, HotspotIntelligence, Copilot...)
- ┃ ┃ ┃ ┗ 📜 index.css           # Custom UI design system
+ ┃ ┃ ┃ ┣ 📂 components/         # Reusable UI components (Sidebar, Layouts)
+ ┃ ┃ ┃ ┣ 📂 pages/              # Dashboard Views
+ ┃ ┃ ┃ ┃ ┣ 📜 CommandCenter.jsx
+ ┃ ┃ ┃ ┃ ┣ 📜 HotspotIntelligence.jsx
+ ┃ ┃ ┃ ┃ ┣ 📜 PredictiveAnalytics.jsx
+ ┃ ┃ ┃ ┃ ┣ 📜 IncidentResponse.jsx
+ ┃ ┃ ┃ ┃ ┣ 📜 Copilot.jsx
+ ┃ ┃ ┃ ┃ ┣ 📜 ExecutiveDashboard.jsx
+ ┃ ┃ ┃ ┃ ┣ 📜 CauseAnalysis.jsx
+ ┃ ┃ ┃ ┃ ┣ 📜 EnforcementOptimizer.jsx
+ ┃ ┃ ┃ ┃ ┣ 📜 ImpactSimulator.jsx
+ ┃ ┃ ┃ ┃ ┗ 📜 Home.jsx
+ ┃ ┃ ┃ ┣ 📜 App.jsx             # React Router logic
+ ┃ ┃ ┃ ┗ 📜 index.css           # Custom UI design system & GSAP animations
+ ┃ ┃ ┣ 📜 package.json
+ ┃ ┃ ┗ 📜 vite.config.js
  ┃ ┣ 📂 backend/                # Python / Flask Machine Learning API Server
  ┃ ┃ ┣ 📜 app.py                # Core API, Model Inferences, and Gemini LLM router
  ┃ ┃ ┣ 📜 train_model.py        # Random Forest model training script
  ┃ ┃ ┣ 📜 requirements.txt      # Python dependencies
  ┃ ┃ ┗ 📜 .env                  # API Keys (Google Gemini)
  ┃ ┗ 📂 data_pipeline/          # Python scripts for data ingestion and processing
+ ┃   ┗ 📂 datasets/             
+ ┃     ┗ 📜 dataset.zip         # Compressed raw telemetry data (300k+ records)
  ┣ 📜 v5_grandmaster.py         # Advanced ML Model Pipeline & Training script
  ┣ 📜 improved_solution.py      # Baseline XGBoost model
  ┣ 📜 extract_csv_data.py       # Data extraction and anonymization utilities
