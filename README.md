@@ -14,13 +14,27 @@ Unorganized parking is a leading cause of urban gridlock. This project attacks t
 
 ---
 
-## ✨ Key Features (Frontend Dashboard)
+## ✨ Key Features
 
-- **AI Traffic Command Center**: A live city map highlighting traffic corridors (Green/Yellow/Red). Pulsing markers isolate bottlenecks specifically induced by parking violations.
-- **Hotspot Intelligence**: A ranked leaderboard of the top 40 critical congestion nodes. Includes an AI SHAP breakdown explaining the exact drivers of the congestion (e.g., Wrong Parking 42%, Metro Traffic 13%).
-- **Predictive Analytics**: A vectorized time-series forecasting tool visualizing volume peaks (+30m, +1h, +3h) to allow enforcement agencies to preemptively deploy units. Includes a dynamic dataset router to drill down into 140+ individual police stations.
-- **Incident Response Engine**: An automated dispatcher that evaluates the severity of capacity loss, analyzes nearby response units, and generates a dynamic Recovery Forecast for any selected hotspot.
-- **Generative AI Copilot**: A true LLM conversational interface powered by the **Google Gemini API**. The Copilot ingests the live telemetry matrix of all 140+ stations simultaneously, allowing operators to ask complex analytical questions (e.g., *"What is the risk score for Adugodi and show in map?"*) with intelligent intent matching and persistent chat history.
+*   **AI Traffic Command Center**
+    <br>![Command Center](assets/command_center.png)<br>
+    A live city map highlighting traffic corridors (Green/Yellow/Red). Pulsing markers isolate bottlenecks specifically induced by parking violations.
+
+*   **Hotspot Intelligence (SHAP Root Cause Analysis)**
+    <br>![Hotspot Intelligence](assets/hotspot_intelligence.png)<br>
+    A ranked leaderboard of the top 40 critical congestion nodes. Includes an AI SHAP breakdown explaining the exact drivers of the congestion (e.g., Wrong Parking 42%, Metro Traffic 13%).
+
+*   **Predictive Analytics**
+    <br>![Predictive Analytics](assets/predictive_analytics.png)<br>
+    A vectorized time-series forecasting tool visualizing volume peaks (+30m, +1h, +3h) to allow enforcement agencies to preemptively deploy units. Includes a dynamic dataset router to drill down into 140+ individual police stations.
+
+*   **Incident Response Engine**
+    <br>![Incident Response](assets/incident_response.png)<br>
+    An automated dispatcher that evaluates the severity of capacity loss, analyzes nearby response units, and generates a dynamic Recovery Forecast for any selected hotspot.
+
+*   **Generative AI Copilot**
+    <br>![AI Copilot](assets/copilot.png)<br>
+    A true LLM conversational interface powered by the **Google Gemini API**. The Copilot ingests the live telemetry matrix of all 140+ stations simultaneously, allowing operators to ask complex analytical questions (e.g., *"What is the risk score for Adugodi and show in map?"*) with intelligent intent matching and persistent chat history.
 
 ---
 
