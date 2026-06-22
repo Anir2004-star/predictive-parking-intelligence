@@ -34,6 +34,7 @@ Unorganized parking is a leading cause of urban gridlock. This project attacks t
 
 *   **Generative AI Copilot**
     <br>![AI Copilot](assets/copilot.png)<br>
+    <br>![AI Copilot NLP](assets/copilot_nlp.png)<br>
     A true LLM conversational interface powered by the **Google Gemini API**. The Copilot ingests the live telemetry matrix of all 140+ stations simultaneously, allowing operators to ask complex analytical questions (e.g., *"What is the risk score for Adugodi and show in map?"*) with intelligent intent matching and persistent chat history.
 
 ---
