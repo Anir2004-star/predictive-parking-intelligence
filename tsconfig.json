@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./FRONTEND/*"]
+    }
+  },
+  "include": [
+    "FRONTEND/**/*.ts",
+    "FRONTEND/**/*.tsx",
+    "parking_prototype/frontend/**/*.ts",
+    "parking_prototype/frontend/**/*.tsx"
+  ],
+  "exclude": ["**/node_modules"]
+}

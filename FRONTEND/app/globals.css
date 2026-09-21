@@ -1,0 +1,98 @@
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #0A0A0F;
+    --background-dark: #12121A;
+    --foreground: #F5F5F7;
+    --accent-priority: #FF6B4A;
+    --accent-teal: #3ED6C8;
+  }
+
+  body {
+    background: radial-gradient(ellipse at 50% 0%, rgba(62, 214, 200, 0.06) 0%, transparent 60%),
+                linear-gradient(180deg, #0A0A0F 0%, #12121A 100%);
+    color: var(--foreground);
+    min-height: 100vh;
+    overflow-x: hidden;
+    letter-spacing: -0.015em;
+  }
+
+  ::selection {
+    background: rgba(62, 214, 200, 0.25);
+    color: #3ED6C8;
+  }
+}
+
+/* Awwwards-Tier Glassmorphic Utilities & Cybernetic Textures */
+@layer utilities {
+  .glass-panel {
+    background: rgba(18, 18, 26, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-card {
+    background: rgba(22, 22, 32, 0.65);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+    transform: translateY(-4px);
+  }
+
+  .glass-subtle {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-interactive {
+    background: rgba(18, 18, 26, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .glass-interactive:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+  }
+
+  .glass-priority {
+    background: rgba(255, 107, 74, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 107, 74, 0.35);
+    box-shadow: 0 0 35px -5px rgba(255, 107, 74, 0.3);
+  }
+
+  .glass-teal {
+    background: rgba(62, 214, 200, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(62, 214, 200, 0.35);
+    box-shadow: 0 0 35px -5px rgba(62, 214, 200, 0.3);
+  }
+
+  /* Cybernetic subtle grid texture */
+  .bg-cyber-grid {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+}

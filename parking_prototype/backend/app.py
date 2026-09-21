@@ -12,16 +12,26 @@ from flask import request
 app = Flask(__name__)
 CORS(app)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+
 # Load the trained model and encoder
+model_path = os.path.join(BASE_DIR, 'models', 'model.pkl')
+if not os.path.exists(model_path):
+    model_path = os.path.join(BASE_DIR, '..', 'models', 'model.pkl')
+
+encoder_path = os.path.join(BASE_DIR, 'models', 'encoder.pkl')
+if not os.path.exists(encoder_path):
+    encoder_path = os.path.join(BASE_DIR, '..', 'models', 'encoder.pkl')
+
 try:
-    model = joblib.load('models/model.pkl')
-    le = joblib.load('models/encoder.pkl')
-    print("Model and encoder loaded successfully.")
+    model = joblib.load(model_path)
+    le = joblib.load(encoder_path)
+    print(f"Model and encoder loaded successfully from {model_path}.")
 except Exception as e:
     print(f"Error loading model: {e}")
     model = None
 
-load_dotenv()
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY and GEMINI_API_KEY != "YOUR_API_KEY_HERE" else None
 
