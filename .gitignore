@@ -20,3 +20,7 @@ Thumbs.db
 catboost_info/
 *.model
 *.pkl
+
+# Agent & Tooling files
+.claude/
+skills-lock.json
